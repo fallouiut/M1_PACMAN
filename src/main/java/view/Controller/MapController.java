@@ -33,6 +33,10 @@ public class MapController {
 
 	public boolean moveEntity(Entity e, int x, int y, int speed) 
 	{
+		// TODO: t'as pas a faire tout ca
+		// fais juste la translation et renvoie un booleen s'il y a une collision
+		// Vraiment map controller s'ocupe que de bouger les éléments sans aucune intellignece.
+		// t'as pas a t'occuper de qui remplacer ou quoi, ca on s'en occupe plus haut dans gameplay
 		ImageView imageToMove = null;
 		if (e.getType() == ENTITIES.PACMAN)
 		{
@@ -61,8 +65,11 @@ public class MapController {
 			}
 	        translateTransition.setAutoReverse(false);
 	        translateTransition.play();
-			replaceImage(e, ENTITIES.EMPTY); // TODO: recupérer ici l'entité "en dessous" du pacman
-						// vu que pacman mange les fruits, ce sera souvent une entite vide
+			//replaceImage(e, pacMap.getMainElem(p));
+ 			// TODO: faut faire un getMainElem() car si ya un ghost juste après, c'est bizarre
+			// TODO: :donc passer l'ancienne position en parametre pour pouvoir modifier la case
+			// TODO de l'ancienne position de pacman
+			// vu que pacman mange les fruits, ce sera souvent une entite vide
 		}
 		else if (e.getType() == ENTITIES.GHOST)
 		{
@@ -88,7 +95,7 @@ public class MapController {
 			}
 	        translateTransition.setAutoReverse(false);
 	        translateTransition.play();
-			replaceImage(e, ENTITIES.FRUTE); // TODO: recupérer ici l'entité "en dessous" du ghost
+			//replaceImage(e, ENTITIES.FRUTE); // TODO: recupérer ici l'entité "en dessous" du ghost
 		}
 		else
 			System.err.println("Error in MapController.movePacman()");

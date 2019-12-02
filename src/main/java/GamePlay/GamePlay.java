@@ -14,7 +14,7 @@ import java.util.List;
 
 public class GamePlay {
 
-	private final String MAP_PATH = "files/maps/map-test.txt";
+    private final String MAP_PATH = "files/maps/map-test.txt";
     public final static int TIME_TO_WAIT = 1000;
 
     private AbstractPacman main;
@@ -30,10 +30,10 @@ public class GamePlay {
     private Object fruteLock = new Object();
     private volatile int frutesNumber = 0;
     public static final int LIFE_NUMBER = 5;
-    
+
     GameMotor gameMotor;
 
-    public GamePlay() throws Exception{
+    public GamePlay() throws Exception {
         this.ghosts = new ArrayList<>();
         this.map = new PacMap();
 
@@ -49,6 +49,10 @@ public class GamePlay {
     public void startEntities() {
         // TODO: lancer l'ia des fantomes
         // TODO: lancer les mouvements pacman
+        for (Ghost g : ghosts) {
+            Thread t = new Thread(g);
+            t.start();
+        }
     }
 
     public void setGameMotor(GameMotor gameMotor) {
@@ -109,15 +113,29 @@ public class GamePlay {
         if (map.isPosition(end)) {
             Position position = entity.getPosition();
             boolean found = map.find(entity, position);
-
+            System.out.println("doMove()");
             if (found) {
+                // moteur de jeu
+                PacMap.ENTITIES mainAtNewPos = map.getLabyrinth()[position.getX()][position.getY()].getMainElem();
+
+
+                gameMotor.makeMove(entity, end);
+
+                // on récupere l'entité principale à la position end
+                // verifie s'il y a collision entre les deux
+                handleCollision(entity, new Entity(mainAtNewPos, end) {
+                    @Override
+                    public PacMap.ENTITIES getType() {
+                        return mainAtNewPos;
+                    }
+                });
+
+                // met a jour la map
                 map.removeEntity(entity);
                 map.moveEntity(entity, end);
-                // TODO:
-                System.out.println("Current position; " + entity.getPosition().toString());
-                System.out.println("Needed position: " + end.toString());
-                gameMotor.makeMove(entity, end);
-                //entity.setPosition(end);
+
+                // met a jour avec sa nouvelle position
+                entity.setPosition(end);
                 return true;
             } else {
                 return false;
@@ -128,15 +146,17 @@ public class GamePlay {
         }
     }
 
-    public void handleCollision(Entity e1, Entity e2) {
+    public void handleCollision(Entity p1, Entity p2) {
         for (Collision collision : collisions) {
-            if (collision.match(e1, e2)) {
-                collision.takeDecision(this, e1, e2);
+            if (collision.match(p1, p2)) { // chaque type de collision verifie s'il est impliqué
+                // si oui, il appelle gamePlay pour l'action à faire
+                collision.takeDecision(this, p1, p2);
                 break;
             }
         }
     }
 
+    // conclusion d'une colliion avec fruit
     public void deleteFrute(Entity e) {
         if (this.map.find(PacMap.ENTITIES.FRUTE, e.getPosition())) {
             synchronized (fruteLock) {
@@ -144,7 +164,7 @@ public class GamePlay {
                 // TODO: map.removeEntity(ENTITIES.FRUTE, p)
                 // TODO: gameMotor.deleteFrute(p);
 
-                if(frutesNumber == 0) {
+                if (frutesNumber == 0) {
                     // TODO: gameMotor.gameWon()
                     // TODO: this.nextLvl()
                 }
@@ -152,6 +172,7 @@ public class GamePlay {
         }
     }
 
+    // conclusion d'une collision avec ghost
     public void killPacman() {
         map.removeEntity(main);
         // TODO: verifier pouvoirs avant de tuer
@@ -204,8 +225,7 @@ public class GamePlay {
         }
     }
 
-    public PacMap getMap()
-    {
-    	return map;
+    public PacMap getMap() {
+        return map;
     }
 }

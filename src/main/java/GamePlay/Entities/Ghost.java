@@ -6,10 +6,12 @@ import GamePlay.Map.Position;
 
 import java.util.concurrent.TimeUnit;
 
-public class Ghost extends Entity {
+public class Ghost extends Entity implements Runnable {
 
     private Position lastPosition = null;
     private Position nextPosition;
+
+    private boolean killed = false;
 
     // [moveTop, moveBottom, left, right] pour pouvoir itérer dessus
     private boolean[] moves = new boolean[4];
@@ -25,6 +27,7 @@ public class Ghost extends Entity {
         this.nGhost = numGhost;
         this.position = position;
         this.gamePlay = gamePlay;
+        System.out.println("Thread: " + Thread.currentThread().getName());
     }
 
     public void finish() {
@@ -71,7 +74,7 @@ public class Ghost extends Entity {
         int indice = -1;
 
         for (int i = 0; i < moves.length; ++i) {
-            System.out.println(directions[i] + ": " + moves[i] + " " + distances[i]);
+            //System.out.println(directions[i] + ": " + moves[i] + " " + distances[i]);
             // si rien n'est défini
             // le premier trouvé est indicé
             if(indice == -1 && distance == -1 && this.moves[i]) {
@@ -84,7 +87,7 @@ public class Ghost extends Entity {
             //System.out.println("CHOIX: " + directions[indice]);
         }
         nextPosition = positions[indice];
-        System.out.println("Nouveau move: " + directions[indice] + ": " + moves[indice] + " " + distances[indice]);
+        //System.out.println("Nouveau move: " + directions[indice] + ": " + moves[indice] + " " + distances[indice]);
     }
 
     /*
@@ -139,8 +142,19 @@ public class Ghost extends Entity {
         }
     }
 
+    /*
+        on boucle et on choisit un mouvement
+     */
+    public void startMoving() {
+        while (!killed) {
+            choose();
+        }
+    }
+
     public void move() {
         try {
+            // gamePlay.doMove() comme d'hab
+            // le truc est déjà fait faudra juste checker la compatibilité avec moveEntity s'il y a des erreurs
             if (this.gamePlay.doMove(this, lastPosition, nextPosition)) {
                 Position lastOne = this.position;
                 this.position = nextPosition;
@@ -157,5 +171,14 @@ public class Ghost extends Entity {
     public int getNumGhost()
     {
     	return nGhost;
+    }
+
+    @Override
+    public void run() {
+        try {
+            startMoving();
+        } catch (Exception e) {
+            System.out.println("Ghost.run() startMoving()");
+        }
     }
 }

@@ -59,7 +59,7 @@ class PacManPowerCollision implements Collision {
 
     @Override
     public void takeDecision(GamePlay gamePlay, Entity e1, Entity e2) {
-        // TODO: RAJOUTER LES DIFFERENTS TYPES DE POUVOIR DANS ENUM PACMAN.ENTITIES
+        // TODO: gamePlay.givePower()
     }
 
 }
