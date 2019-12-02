@@ -40,7 +40,6 @@ public class PhysicalMotor {
     {
         System.out.println("loadMap");
     	window.initializeMap(stateMap);
-    	window.getMap().build();
     }
 
     public void setScore(int score) {

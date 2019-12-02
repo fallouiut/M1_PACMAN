@@ -6,7 +6,6 @@ import javafx.scene.image.Image;
 public class Sprites {
 	
 	final static String SPRITES_PATH = "files/images/";
-
 	public static Image simple_wall, upper_left_corner, upper_right_corner,
 				  bottom_left_corner, bottom_right_corner,
 
@@ -148,5 +147,37 @@ public class Sprites {
 			return Sprites.pacman_down1;
 		else
 			return Sprites.pacman_left2;
+	}
+	
+	public static Image orientatePacman(Image currentImage, String direction)
+	{
+		boolean one;
+		if (currentImage == Sprites.pacman_down1 ||
+			currentImage == Sprites.pacman_left1 ||
+			currentImage == Sprites.pacman_up1   ||
+			currentImage == Sprites.pacman_right1)
+			one = true;
+		else
+			one = false;
+		switch (direction)
+		{
+				case "RIGHT":
+					if (one)
+						return Sprites.pacman_right1;
+					else return Sprites.pacman_right2;
+				case "LEFT":
+					if (one)
+						return Sprites.pacman_left1;
+					else return Sprites.pacman_left2;
+				case "UP":
+					if (one)
+						return Sprites.pacman_up1;
+					else return Sprites.pacman_up2;
+				case "DOWN":
+					if (one)
+						return Sprites.pacman_down1;
+					else return Sprites.pacman_down2;
+		}
+		return null;
 	}
 }

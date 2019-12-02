@@ -5,7 +5,6 @@ import GamePlay.Entities.Entity;
 import GamePlay.Map.Cell;
 import GamePlay.Map.PacMap;
 import GamePlay.Map.PacMap.ENTITIES;
-import GamePlay.Map.Position;
 import view.Interface.Map;
 import view.Interface.Sprites;
 import javafx.animation.TranslateTransition;
@@ -31,44 +30,48 @@ public class MapController {
 
 	public boolean moveEntity(Entity e, int x, int y, int speed) 
 	{
-		// METTRE LE CODE DES DEUX MOVE EN UN
-		// NE PLUS CALCULER CELUI QUI BOUGE C LE ROLE DE PHYSICAL MOTOR
-		// FAIRE JUSTE UNE TRANSLATION
-		// JUSTE BOUGER LIMAGE DE LA POSITION DEPART A LA POSITION ARRIVEE
 		ImageView imageToMove = null;
 		if (e.getType() == ENTITIES.PACMAN)
+		{
 			imageToMove = m_pacman;
+			TranslateTransition translateTransition = 
+					new TranslateTransition(Duration.millis(speed), imageToMove);
+			if (y == 1)
+			{
+				translateTransition.setByX(MapController.CONFIG_X);
+		        imageToMove.setImage(Sprites.orientatePacman(imageToMove.getImage(), "RIGHT"));
+			}
+			else if (y == -1)
+			{
+				translateTransition.setByX(- MapController.CONFIG_X);
+		        imageToMove.setImage(Sprites.orientatePacman(imageToMove.getImage(), "LEFT"));
+			}
+			else if (x == 1)
+			{
+				translateTransition.setByY(MapController.CONFIG_X);
+		        imageToMove.setImage(Sprites.orientatePacman(imageToMove.getImage(), "DOWN"));
+			}
+			else if (x == -1)
+			{
+				translateTransition.setByY(- MapController.CONFIG_X);
+		        imageToMove.setImage(Sprites.orientatePacman(imageToMove.getImage(), "UP"));
+			}
+	        translateTransition.setAutoReverse(false);
+	        translateTransition.play();
+		}
 		else if (e.getType() == ENTITIES.GHOST)
-			imageToMove = m_ghosts.get(0);
-		TranslateTransition translateTransition = 
-				new TranslateTransition(Duration.millis(speed), imageToMove);
-		if (y == 1)
-		{
-	        translateTransition.setByX(MapController.CONFIG_X);
-	        m_pacman.setImage(Sprites.pacman_right2);
-		}
-		else if (y == -1)
-		{
-	        translateTransition.setByX(- MapController.CONFIG_X);
-	        m_pacman.setImage(Sprites.pacman_left2);
-		}
-		else if (x == 1)
-		{
-	        translateTransition.setByY(MapController.CONFIG_Y);
-	        m_pacman.setImage(Sprites.pacman_down2);
-		}
-		else if (x == -1)
-		{
-	        translateTransition.setByY(- MapController.CONFIG_Y);
-	        m_pacman.setImage(Sprites.pacman_up2);
-		}
+			;
 		else
 			System.err.println("Error in MapController.movePacman()");
-        translateTransition.setAutoReverse(false);
-        translateTransition.play();
+		replaceImage(e);
         return true;
 	}
 	
+	private void replaceImage(Entity e) 
+	{
+		m_map.replaceImage(e.getPosition().getX(), e.getPosition().getY());
+	}
+
 	public ImageView getPacman()
 	{
 		return m_pacman;
@@ -84,8 +87,8 @@ public class MapController {
 		System.out.println("initMap");
 		Cell[][] cells = pacmap.getLabyrinth();
 		Cell currentCell;
-		int x = 0;
-		int y = 0;
+		double x = 0;
+		double y = 0;
 		int nGhost = 0;
 		for (int i = 0; i < cells.length; i++)
 		{
