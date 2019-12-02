@@ -1,8 +1,9 @@
 package view.Interface;
 import java.util.ArrayList;
 
+import GamePlay.Map.PacMap;
+import GamePlay.Map.PacMap.ENTITIES;
 import view.Controller.MapController;
-import view.Interface.Cell.ENTITIES;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -14,7 +15,7 @@ public class Map extends Pane
 	ArrayList <ImageView> m_ghosts = new ArrayList <ImageView> ();
 	ImageView m_pacman;
 	
-	public ImageView addTile(Image image, int x, int y, Cell.ENTITIES entity)
+	public ImageView addTile(Image image, int x, int y, ENTITIES entity)
 	{
 	  ImageView imageView = new ImageView();
       imageView.setImage(image);

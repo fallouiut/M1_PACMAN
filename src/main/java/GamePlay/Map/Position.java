@@ -1,8 +1,4 @@
 package GamePlay.Map;
-
-import GamePlay.GamePlay;
-import javafx.geometry.Pos;
-
 public class Position {
 
     private int x;

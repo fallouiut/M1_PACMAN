@@ -14,6 +14,7 @@ import java.util.List;
 
 public class GamePlay {
 
+	private final String MAP_PATH = "files/maps/map-test.txt";
     public final static int TIME_TO_WAIT = 1000;
 
     private AbstractPacman main;
@@ -27,7 +28,8 @@ public class GamePlay {
 
     private Object fruteLock = new Object();
     private volatile int frutesNumber;
-
+    private final int LIFE_NUMBER = 5;
+    
     GameMotor gameMotor;
 
     public GamePlay() throws Exception{
@@ -35,7 +37,7 @@ public class GamePlay {
         this.map = new PacMap();
 
         this.map.setGamePlay(this);
-        this.map.setPath("files/maps/map-test.txt");
+        this.map.setPath(MAP_PATH);
         this.map.load();
 
         // les collisions possible
@@ -51,7 +53,6 @@ public class GamePlay {
 
     public void setGameMotor(GameMotor gameMotor) {
         this.gameMotor = gameMotor;
-        gameMotor.setGamePlay(this);
     }
 
     public List<Ghost> getGhosts() {
@@ -197,5 +198,15 @@ public class GamePlay {
 
     public Entity getMain() {
         return main;
+    }
+    
+    public PacMap getMap()
+    {
+    	return map;
+    }
+    
+    public int getLifeNumber()
+    {
+    	return LIFE_NUMBER;
     }
 }
