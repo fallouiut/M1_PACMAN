@@ -3,7 +3,6 @@ package Motors;
 import GamePlay.Entities.Entity;
 import GamePlay.Map.PacMap;
 import GamePlay.Map.Position;
-import view.Controller.ApplicationController;
 import view.Controller.MapController;
 
 import java.util.ArrayList;
