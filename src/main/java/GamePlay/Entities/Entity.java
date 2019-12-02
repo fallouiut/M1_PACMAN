@@ -8,7 +8,8 @@ public abstract class Entity {
     protected PacMap.ENTITIES type;
     protected Position position;
 
-    public Entity(PacMap.ENTITIES type, Position position){
+    public Entity(PacMap.ENTITIES type, Position position)
+    {
         this.type = type;
         this.position = position;
     }
