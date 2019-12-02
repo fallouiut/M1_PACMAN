@@ -99,23 +99,23 @@ public class GamePlay {
 
     public boolean pacmanMove(String orientation) {
         Position newP = PacMap.getNewPositionByOrientation(this.main.getPosition(), orientation);
-        return doMove(main, newP);
+        return doMove(main, main.getPosition(), newP);
     }
 
-    public boolean doMove(Entity entity, Position newOne) {
+    public boolean doMove(Entity entity, Position start, Position end) {
         System.out.println("gamePlay.movePacman()");
-        if (map.isPosition(newOne)) {
+        if (map.isPosition(end)) {
             Position position = entity.getPosition();
             boolean found = map.find(entity, position);
 
             if (found) {
                 map.removeEntity(entity);
-                map.moveEntity(entity, newOne);
+                map.moveEntity(entity, end);
                 // TODO:
                 System.out.println("Current position; " + entity.getPosition().toString());
-                System.out.println("Needed position: " + newOne.toString());
-                gameMotor.makeMove(entity, newOne);
-                //entity.setPosition(newOne);
+                System.out.println("Needed position: " + end.toString());
+                gameMotor.makeMove(entity, end);
+                //entity.setPosition(end);
                 return true;
             } else {
                 return false;

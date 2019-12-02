@@ -51,9 +51,9 @@ public class GameMotor {
     	Sounds.bonus();
     }  
 
-    public void makeMove(Entity entity, Position newOne) {
+    public void makeMove(Entity entity, Position end) {
         System.out.println("gameMotor.makeMove()");
-        physicalMotor.translation(entity, newOne);
+        physicalMotor.translation(entity, end);
     }
 	
     // TODO : Il faut appeller cette fonction quand le score est modifié

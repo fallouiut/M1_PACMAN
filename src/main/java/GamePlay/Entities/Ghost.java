@@ -138,7 +138,7 @@ public class Ghost extends Entity {
 
     public void move() {
         try {
-            if (this.gamePlay.doMove(this, nextPosition)) {
+            if (this.gamePlay.doMove(this, lastPosition, nextPosition)) {
                 Position lastOne = this.position;
                 this.position = nextPosition;
                 this.lastPosition = lastOne;

@@ -28,68 +28,36 @@ public class MapController {
 		entities.clear();
 		initializeMap(pacmap);
 	}
-	
-	// To move once to the left, moveGhost(1, 0, nGhost);
-	public void moveGhost(Position p, int nGhost)
-	{
-		TranslateTransition translateTransition = 
-	    new TranslateTransition(Duration.millis(10), m_ghosts.get(nGhost));
-		int x = p.getX();
-		int y = p.getY();
-		if (x > 0 && y == 0)
-	        translateTransition.setByX(MapController.CONFIG_X);
-		if (x < 0 && y == 0)
-	        translateTransition.setByX(- MapController.CONFIG_X);
-		else if (x == 0 && y < 0)
-	        translateTransition.setByY(- MapController.CONFIG_Y);
-		else if (x == 0 && y > 0)
-	        translateTransition.setByY(MapController.CONFIG_Y);
-        translateTransition.setAutoReverse(false);
-        translateTransition.play();
-	}
 
-	public boolean moveEntity(Position depart, Position arrivee, int speed) {
+	public boolean moveEntity(Entity e, int x, int y, int speed) 
+	{
 		// METTRE LE CODE DES DEUX MOVE EN UN
 		// NE PLUS CALCULER CELUI QUI BOUGE C LE ROLE DE PHYSICAL MOTOR
 		// FAIRE JUSTE UNE TRANSLATION
 		// JUSTE BOUGER LIMAGE DE LA POSITION DEPART A LA POSITION ARRIVEE
-		return true;
-	}
-
-	public void movePacman(Position newPosition, int speed)
-	{
+		ImageView imageToMove = null;
+		if (e.getType() == ENTITIES.PACMAN)
+			imageToMove = m_pacman;
+		else if (e.getType() == ENTITIES.GHOST)
+			imageToMove = m_ghosts.get(0);
 		TranslateTransition translateTransition = 
-	    new TranslateTransition(Duration.millis(speed), m_pacman);
-		// TODO : remplacer m_pacman.getX et m_pacman.getY par la façon "normale" d'accéder
-		// A la position de pacman, là j'utilise les coordonnées de l'image
-		double pacmanX = m_pacman.getX();
-		double pacmanY = m_pacman.getY();
-		double newX = newPosition.getX();
-		double newY = newPosition.getY();
-		double difX = newX - pacmanX;
-		double difY = newY - pacmanY;
-		// TODO: vu que c"est des mouvements un à un je pense pas
-		//  que difX et difY peuvent etre > 0 en même temps
-		// apres je sais pas
-		// justement c'est une securite, si c'est le cas c'est que y'a eu un bug quelque part
-		if (difX != 0 && difY != 0)
-			System.err.println("Error in MapController.movePacman()");
-		else if (difX == 1)
+				new TranslateTransition(Duration.millis(speed), imageToMove);
+		if (y == 1)
 		{
 	        translateTransition.setByX(MapController.CONFIG_X);
 	        m_pacman.setImage(Sprites.pacman_right2);
 		}
-		else if (difX == -1)
+		else if (y == -1)
 		{
 	        translateTransition.setByX(- MapController.CONFIG_X);
 	        m_pacman.setImage(Sprites.pacman_left2);
 		}
-		else if (difY == 1)
+		else if (x == 1)
 		{
 	        translateTransition.setByY(MapController.CONFIG_Y);
 	        m_pacman.setImage(Sprites.pacman_down2);
 		}
-		else if (difY == -1)
+		else if (x == -1)
 		{
 	        translateTransition.setByY(- MapController.CONFIG_Y);
 	        m_pacman.setImage(Sprites.pacman_up2);
@@ -98,6 +66,7 @@ public class MapController {
 			System.err.println("Error in MapController.movePacman()");
         translateTransition.setAutoReverse(false);
         translateTransition.play();
+        return true;
 	}
 	
 	public ImageView getPacman()

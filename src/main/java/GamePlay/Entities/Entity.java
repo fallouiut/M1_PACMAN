@@ -18,7 +18,8 @@ public abstract class Entity {
     public PacMap.ENTITIES getType() {return type;}
     public Position getPosition() {return position;}
     public int getSpeed() {return speed; }
-    public  void setPosition(Position newOne) {
+    public  void setPosition(Position newOne) 
+    {
         this.position = newOne;
     }
 }

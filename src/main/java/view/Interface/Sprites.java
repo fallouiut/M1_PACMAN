@@ -20,7 +20,7 @@ public class Sprites {
 
 				 left_edge, right_edge, upper_edge, bottom_edge,
 
-				  empty, empty_fruit,
+				  empty, empty_fruit, super_fruit,
 
 				  pacman_left1, pacman_right1, pacman_up1, pacman_down1,
 				  pacman_left2, pacman_right2, pacman_up2, pacman_down2,
@@ -62,6 +62,7 @@ public class Sprites {
 		bottom_right_turn = createImage("virage_bas_droit.png");
 
 		empty_fruit = createImage("vide_fruit.png");
+		super_fruit = createImage("fruit_pouvoir.png");
 		empty = createImage("vide.png");
 
 		pacman_left1 = createImage("pacman_gauche_1.png");
