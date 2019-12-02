@@ -25,7 +25,6 @@ public class Ghost extends Entity {
     }
 
     public void finish() {
-        this.gamePlay = null;
     }
 
     public void initMovesData() {

@@ -1,7 +1,6 @@
 package view.Interface;
 import java.util.ArrayList;
 
-import GamePlay.Map.PacMap;
 import GamePlay.Map.PacMap.ENTITIES;
 import view.Controller.MapController;
 import javafx.scene.image.Image;
@@ -11,8 +10,8 @@ import javafx.scene.layout.Pane;
 
 public class Map extends Pane 
 {
-	ArrayList <ImageView> m_fruits = new ArrayList <ImageView> ();
-	ArrayList <ImageView> m_ghosts = new ArrayList <ImageView> ();
+	ArrayList <ImageView> m_fruits = new ArrayList <> ();
+	ArrayList <ImageView> m_ghosts = new ArrayList <> ();
 	ImageView m_pacman;
 	
 	public ImageView addTile(Image image, int x, int y, ENTITIES entity)

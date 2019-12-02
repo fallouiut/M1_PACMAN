@@ -8,10 +8,17 @@ import view.Interface.Sounds;
 
 public class GameMotor {
 
+    private final Sounds sounds;
     private PhysicalMotor physicalMotor;
 
+    public GameMotor(PhysicalMotor physicalMotor, Sounds sounds) {
+        this.physicalMotor = physicalMotor;
+        this.sounds = sounds;
+    }
+
     public void launchParty(PacMap stateMap) {
-        physicalMotor.initMap(stateMap);
+        System.out.println("launchParty");
+        physicalMotor.loadMap(stateMap);
     }
 
     public void gameIsReached() {
@@ -57,5 +64,4 @@ public class GameMotor {
     public void setLife(int life) {
     	physicalMotor.setLife(life);
     }
-   
 }

@@ -2,8 +2,6 @@ package view.Controller;
 import java.util.ArrayList;
 
 import GamePlay.Entities.Entity;
-import GamePlay.Entities.Fruit;
-import GamePlay.Entities.PacmanEntity;
 import GamePlay.Map.Cell;
 import GamePlay.Map.PacMap;
 import GamePlay.Map.PacMap.ENTITIES;
@@ -20,30 +18,21 @@ public class MapController {
 	public final static int CONFIG_Y = 25;
 	ImageView m_pacman;
 	ArrayList <ImageView> m_ghosts = new ArrayList <ImageView> ();
-	private int m_speed;
-	public int m_nGhost = 0;
 	private Map m_map = new Map();
 	
 	private ArrayList <Entity> entities = new ArrayList <Entity> ();
-	
-	public MapController(int speed)
-	{		
-		m_speed = speed;
-	}
 	
 	public void refresh(PacMap pacmap, int speed)
 	{
 		m_map.refresh();
 		entities.clear();
-		m_nGhost = 0;
-		m_speed = speed;
 		initializeMap(pacmap);
 	}
 	// To move once to the left, moveGhost(1, 0, nGhost);
 	public void moveGhost(Position p, int nGhost)
 	{
 		TranslateTransition translateTransition = 
-	    new TranslateTransition(Duration.millis(m_speed), m_ghosts.get(nGhost));
+	    new TranslateTransition(Duration.millis(10), m_ghosts.get(nGhost));
 		int x = p.getX();
 		int y = p.getY();
 		if (x > 0 && y == 0)
@@ -58,10 +47,18 @@ public class MapController {
         translateTransition.play();
 	}
 
-	public void movePacman(Position newPosition) 
+	public boolean moveEntity(Position depart, Position arrivee, int speed) {
+		// METTRE LE CODE DES DEUX MOVE EN UN
+		// NE PLUS CALCULER CELUI QUI BOUGE C LE ROLE DE PHYSICAL MOTOR
+		// FAIRE JUSTE UNE TRANSLATION
+		// JUSTE BOUGER LIMAGE DE LA POSITION DEPART A LA POSITION ARRIVEE
+		return true;
+	}
+
+	public void movePacman(Position newPosition, int speed)
 	{
 		TranslateTransition translateTransition = 
-	    new TranslateTransition(Duration.millis(m_speed), m_pacman);
+	    new TranslateTransition(Duration.millis(speed), m_pacman);
 		// TODO : remplacer m_pacman.getX et m_pacman.getY par la façon "normale" d'accéder
 		// A la position de pacman, là j'utilise les coordonnées de l'image
 		double pacmanX = m_pacman.getX();
@@ -70,6 +67,9 @@ public class MapController {
 		double newY = newPosition.getY();
 		double difX = newX - pacmanX;
 		double difY = newY - pacmanY;
+		// TODO: vu que c"est des mouvements un à un je pense pas
+		//  que difX et difY peuvent etre > 0 en même temps
+		// apres je sais pas
 		if (difX != 0 && difY != 0)
 			System.err.println("Error in MapController.movePacman()");
 		else if (difX == 1)
@@ -110,6 +110,7 @@ public class MapController {
 	
 	public void initializeMap(PacMap pacmap)
 	{
+		System.out.println("initMap");
 		Cell[][] cells = pacmap.getLabyrinth();
 		Cell currentCell;
 		int x = 0;
@@ -125,21 +126,22 @@ public class MapController {
 				}
 				else if (currentCell.getMainElem() == ENTITIES.FRUTE)
 				{
-					entities.add(new Fruit(new Position(x, y)));
+					//entities.add(new Fruit(new Position(x, y)));
 					m_map.addTile(Sprites.empty_fruit, x, y, ENTITIES.FRUTE);
 					m_map.addTile(Sprites.empty, x, y, ENTITIES.EMPTY);
 				}
 				else if (currentCell.getMainElem() == ENTITIES.PACMAN)
 				{
-					entities.add(new PacmanEntity(new Position(x, y)));
+					//entities.add(new PacmanEntity(new Position(x, y)));
+					System.out.println("pacman trouvé");
 					m_pacman = m_map.addTile(Sprites.pacman_left2, x, y, ENTITIES.PACMAN);
 					m_map.addTile(Sprites.empty, x, y, ENTITIES.EMPTY);
 				}
 				else if (currentCell.getMainElem() == ENTITIES.GHOST)
 				{
-					m_nGhost += 1;
+					//m_nGhost += 1;
 					m_map.addTile(Sprites.empty, x, y, ENTITIES.EMPTY);
-					m_ghosts.add(m_map.addTile(Sprites.getGhostSPrite(m_nGhost), x, y, ENTITIES.GHOST));
+					//m_ghosts.add(m_map.addTile(Sprites.getGhostSPrite(m_nGhost), x, y, ENTITIES.GHOST));
 				}
 				else
 					m_map.addTile(Sprites.simple_wall, x, y, ENTITIES.BLOC);

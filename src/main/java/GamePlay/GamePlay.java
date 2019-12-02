@@ -27,8 +27,8 @@ public class GamePlay {
     private List<Ghost> ghosts;
 
     private Object fruteLock = new Object();
-    private volatile int frutesNumber;
-    private final int LIFE_NUMBER = 5;
+    private volatile int frutesNumber = 0;
+    public static final int LIFE_NUMBER = 5;
     
     GameMotor gameMotor;
 
@@ -38,7 +38,6 @@ public class GamePlay {
 
         this.map.setGamePlay(this);
         this.map.setPath(MAP_PATH);
-        this.map.load();
 
         // les collisions possible
         this.collisions.add(new PacManFruteCollision());
@@ -77,6 +76,8 @@ public class GamePlay {
                     break;
             }
         } catch (Exception e) {
+            System.out.println("Entity type problem: " + entity.toString());
+            System.out.println("GamePlau.addEntity()");
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
@@ -110,9 +111,11 @@ public class GamePlay {
             if (found) {
                 map.removeEntity(entity);
                 map.moveEntity(entity, newOne);
-                entity.setPosition(newOne);
                 // TODO:
+                System.out.println("Current position; " + entity.getPosition().toString());
+                System.out.println("Needed position: " + newOne.toString());
                 gameMotor.makeMove(entity, newOne);
+                //entity.setPosition(newOne);
                 return true;
             } else {
                 return false;
@@ -166,19 +169,22 @@ public class GamePlay {
     }
 
     public void start() {
+        System.out.println("start");
         gameMotor.launchParty(this.map);
         startEntities();
     }
 
     public void nextLevel() throws Exception {
+        System.out.println("nextLvl()");
         try {
-            String path = "files/maps/map-" + currentLevel + ".txt";
+            //String path = "files/maps/map-" + currentLevel + ".txt";
+            String path = "files/maps/map-test.txt";
             File file = new File(path);
             if (file.exists()) {
                 this.frutesNumber = 0;
                 this.main = null;
-                this.ghosts = null;
-                this.currentLevel += 1;
+                this.ghosts = new ArrayList<>();
+                //this.currentLevel += 1;
 
                 this.map.destroy();
                 this.map.setPath(path);
@@ -196,17 +202,8 @@ public class GamePlay {
         }
     }
 
-    public Entity getMain() {
-        return main;
-    }
-    
     public PacMap getMap()
     {
     	return map;
-    }
-    
-    public int getLifeNumber()
-    {
-    	return LIFE_NUMBER;
     }
 }
