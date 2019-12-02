@@ -12,6 +12,7 @@ public class Map extends Pane
 {
 	ArrayList <ImageView> m_fruits = new ArrayList <> ();
 	ArrayList <ImageView> m_ghosts = new ArrayList <> ();
+	ArrayList <ImageView> m_blocs = new ArrayList <> ();
 	ImageView m_pacman;
 	
 	public ImageView addTile(Image image, int x, int y, ENTITIES entity)
@@ -29,13 +30,15 @@ public class Map extends Pane
 		  m_ghosts.add(imageView);
 	  else if (entity == ENTITIES.PACMAN)
 		  m_pacman = imageView;
-	  else
-		  getChildren().add(imageView);
+	  else if (entity == ENTITIES.BLOC)
+		  m_blocs.add(imageView);
 	  return imageView;
 	}
 	
 	public void build()
 	{
+		for (ImageView bloc : m_blocs)
+			getChildren().add(bloc);
 		for (ImageView fruit : m_fruits)
 			getChildren().add(fruit);
 		for (ImageView ghosts : m_ghosts)

@@ -71,6 +71,7 @@ public class MapController {
 		// TODO: vu que c"est des mouvements un à un je pense pas
 		//  que difX et difY peuvent etre > 0 en même temps
 		// apres je sais pas
+		// justement c'est une securite, si c'est le cas c'est que y'a eu un bug quelque part
 		if (difX != 0 && difY != 0)
 			System.err.println("Error in MapController.movePacman()");
 		else if (difX == 1)
@@ -116,6 +117,7 @@ public class MapController {
 		Cell currentCell;
 		int x = 0;
 		int y = 0;
+		int nGhost = 0;
 		for (int i = 0; i < cells.length; i++)
 		{
 			for (int j = 0; j < cells[i].length; j++)
@@ -129,24 +131,22 @@ public class MapController {
 				{
 					//entities.add(new Fruit(new Position(x, y)));
 					m_map.addTile(Sprites.empty_fruit, x, y, ENTITIES.FRUTE);
-					m_map.addTile(Sprites.empty, x, y, ENTITIES.EMPTY);
 				}
 				else if (currentCell.getMainElem() == ENTITIES.PACMAN)
 				{
 					//entities.add(new PacmanEntity(new Position(x, y)));
 					System.out.println("pacman trouvé");
 					m_pacman = m_map.addTile(Sprites.pacman_left2, x, y, ENTITIES.PACMAN);
-					m_map.addTile(Sprites.empty, x, y, ENTITIES.EMPTY);
 				}
 				else if (currentCell.getMainElem() == ENTITIES.GHOST)
 				{
-					//m_nGhost += 1;
-					m_map.addTile(Sprites.empty, x, y, ENTITIES.EMPTY);
-					//m_ghosts.add(m_map.addTile(Sprites.getGhostSPrite(m_nGhost), x, y, ENTITIES.GHOST));
+					nGhost++;
+					m_ghosts.add(m_map.addTile(Sprites.getGhostSPrite(nGhost), x, y, ENTITIES.GHOST));
 				}
-				else
+				else if (currentCell.getMainElem() == ENTITIES.BLOC)
 					m_map.addTile(Sprites.simple_wall, x, y, ENTITIES.BLOC);
-				if (x < CONFIG_X * cells[0].length)
+				
+				if (x < CONFIG_X * (cells[0].length - 1))
 					x += CONFIG_X;
 				else
 				{
