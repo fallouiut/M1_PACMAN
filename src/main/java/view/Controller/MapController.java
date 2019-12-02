@@ -28,6 +28,7 @@ public class MapController {
 		entities.clear();
 		initializeMap(pacmap);
 	}
+	
 	// To move once to the left, moveGhost(1, 0, nGhost);
 	public void moveGhost(Position p, int nGhost)
 	{
@@ -154,7 +155,6 @@ public class MapController {
 				}
 			}
 		}
-		m_map.build();
 	}
 	
 	public ArrayList <Entity> getEntities()

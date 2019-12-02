@@ -11,9 +11,9 @@ public class PhysicalMotor {
     private MapController window;
     private PacMap stateMap;
 
-    public PhysicalMotor(MapController m_mapController) throws Exception
+    public PhysicalMotor(MapController mapController) throws Exception
     {
-        this.window = m_mapController;
+        this.window = mapController;
     }
     
     public void translation(Entity entity, Position newOne) {
