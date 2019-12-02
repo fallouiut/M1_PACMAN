@@ -2,12 +2,14 @@ package view.Controller;
 import java.util.ArrayList;
 
 import GamePlay.Entities.Entity;
+import GamePlay.Entities.Ghost;
 import GamePlay.Map.Cell;
 import GamePlay.Map.PacMap;
 import GamePlay.Map.PacMap.ENTITIES;
 import view.Interface.Map;
 import view.Interface.Sprites;
 import javafx.animation.TranslateTransition;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
@@ -15,6 +17,7 @@ public class MapController {
 
 	public final static int CONFIG_X = 25;
 	public final static int CONFIG_Y = 25;
+	
 	ImageView m_pacman;
 	ArrayList <ImageView> m_ghosts = new ArrayList <ImageView> ();
 	private Map m_map = new Map();
@@ -58,18 +61,46 @@ public class MapController {
 			}
 	        translateTransition.setAutoReverse(false);
 	        translateTransition.play();
+			replaceImage(e, ENTITIES.EMPTY); // TODO: recupérer ici l'entité "en dessous" du pacman
+						// vu que pacman mange les fruits, ce sera souvent une entite vide
 		}
 		else if (e.getType() == ENTITIES.GHOST)
-			;
+		{
+			Ghost g = (Ghost) e;
+			imageToMove = m_ghosts.get(g.getNumGhost());
+			TranslateTransition translateTransition = 
+					new TranslateTransition(Duration.millis(speed), imageToMove);
+			if (y == 1)
+			{
+				translateTransition.setByX(MapController.CONFIG_X);
+			}
+			else if (y == -1)
+			{
+				translateTransition.setByX(- MapController.CONFIG_X);
+			}
+			else if (x == 1)
+			{
+				translateTransition.setByY(MapController.CONFIG_X);
+			}
+			else if (x == -1)
+			{
+				translateTransition.setByY(- MapController.CONFIG_X);
+			}
+	        translateTransition.setAutoReverse(false);
+	        translateTransition.play();
+			replaceImage(e, ENTITIES.FRUTE); // TODO: recupérer ici l'entité "en dessous" du ghost
+		}
 		else
 			System.err.println("Error in MapController.movePacman()");
-		replaceImage(e);
         return true;
 	}
 	
-	private void replaceImage(Entity e) 
+	private void replaceImage(Entity e, ENTITIES replaceByThisEntity) 
 	{
-		m_map.replaceImage(e.getPosition().getX(), e.getPosition().getY());
+		int x = e.getPosition().getX();
+		int y = e.getPosition().getY();
+		m_map.replaceImage(x, y, replaceByThisEntity);
+		m_map.preserveFrontground(m_ghosts, m_pacman);
 	}
 
 	public ImageView getPacman()
@@ -117,7 +148,10 @@ public class MapController {
 				}
 				else if (currentCell.getMainElem() == ENTITIES.BLOC)
 					m_map.addTile(Sprites.simple_wall, x, y, ENTITIES.BLOC);
-				
+				else if (currentCell.getMainElem() == ENTITIES.KILLING_POWER ||
+						 currentCell.getMainElem() == ENTITIES.SLOW_GHOST_POWER ||
+						 currentCell.getMainElem() == ENTITIES.SPEED_POWER)
+					m_map.addTile(Sprites.super_fruit, x, y, currentCell.getMainElem());
 				if (x < CONFIG_X * (cells[0].length - 1))
 					x += CONFIG_X;
 				else

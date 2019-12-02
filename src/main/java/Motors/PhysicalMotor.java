@@ -42,7 +42,8 @@ public class PhysicalMotor {
     	window.initializeMap(stateMap);
     }
 
-    public void setScore(int score) {
+    public void setScore(int score) 
+    {
     }
 
     public void setLife(int life) {

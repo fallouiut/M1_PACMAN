@@ -16,6 +16,10 @@ public class PacMap {
     public final static String TEXT_SLOW_GHOST_POWER = "3";
     public final static String TEXT_KILLING_POWER = "4";
     public final static String TEXT_EMPTY = " ";
+    
+    private Cell[][] labyrinth;
+    private String file;
+    private GamePlay gamePlay;
 
     public void setPath(String filename) {
         this.file = filename;
@@ -40,10 +44,6 @@ public class PacMap {
         Cell cell = labyrinth[newOne.getX()][newOne.getY()];
         cell.addElems(entity.getType());
     }
-
-    private Cell[][] labyrinth;
-    private String file;
-    private GamePlay gamePlay;
 
     public void setGamePlay(GamePlay gamePlay) {
         this.gamePlay = gamePlay;

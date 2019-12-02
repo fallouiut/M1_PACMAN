@@ -17,9 +17,12 @@ public class Ghost extends Entity {
     private Position[] positions = new Position[4];
     private String[] directions = {"Haut", "Bas", "Gauche", "Droite"};
     private GamePlay gamePlay;
+    
+    private int nGhost;
 
-    public Ghost(Position position, GamePlay gamePlay) {
+    public Ghost(int numGhost, Position position, GamePlay gamePlay) {
         super(PacMap.ENTITIES.GHOST, position);
+        this.nGhost = numGhost;
         this.position = position;
         this.gamePlay = gamePlay;
     }
@@ -149,5 +152,10 @@ public class Ghost extends Entity {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+    }
+    
+    public int getNumGhost()
+    {
+    	return nGhost;
     }
 }

@@ -25,6 +25,7 @@ public class GamePlay {
     private List<Collision> collisions = new ArrayList<Collision>();
 
     private List<Ghost> ghosts;
+    private int nGhost = 0;
 
     private Object fruteLock = new Object();
     private volatile int frutesNumber = 0;
@@ -69,7 +70,8 @@ public class GamePlay {
                     this.main = new SimplePacman(position, this);
                     break;
                 case GHOST:
-                    this.ghosts.add(new Ghost(position, this));
+                    this.ghosts.add(new Ghost(nGhost, position, this));
+                    nGhost++;
                     break;
                 case FRUTE:
                     frutesNumber++;
