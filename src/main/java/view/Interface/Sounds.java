@@ -39,38 +39,45 @@ public class Sounds {
 	
 	public static void death()
 	{
-        death.play();   
+        death.stop();
+		death.play();   
 	}
 
 	
 	public static void fruit()
 	{
-        fruit.play();   
+        fruit.stop();
+		fruit.play();
 	}
 	
 	public static void bonus()
 	{
-        bonus.play();   
+		bonus.stop();
+		bonus.play();   
 	}
 	
 	public static void gameOver()
 	{
-       gameOver.play();   
+		gameOver.stop();
+		gameOver.play();   
 	}
 	
 	public static void ghost()
 	{
-        ghost.play();   
+        ghost.stop();
+		ghost.play();   
 	}
 	
 	public static void victory()
 	{
-       victory.play();   
+        victory.stop();
+		victory.play();   
 	}
 	
 	public static void lifeLost()
 	{
-        lifeLost.play();   
+        lifeLost.stop();
+		lifeLost.play();   
 	}
 	
 	private MediaPlayer createMediaPlayer(String pathMedia)
