@@ -89,31 +89,31 @@ public class StateBar {
 		switch (life)
 		{
 			case 0:
-				m_imageLife.setImage(Sprites.score_zero);
+				m_imageNumberLife.setImage(Sprites.score_zero);
 				break;
 			case 1:
-				m_imageLife.setImage(Sprites.score_one);
+				m_imageNumberLife.setImage(Sprites.score_one);
 				break;
 			case 2:
-				m_imageLife.setImage(Sprites.score_two);
+				m_imageNumberLife.setImage(Sprites.score_two);
 				break;
 			case 3:
-				m_imageLife.setImage(Sprites.score_three);
+				m_imageNumberLife.setImage(Sprites.score_three);
 				break;
 			case 4:
-				m_imageLife.setImage(Sprites.score_four);
+				m_imageNumberLife.setImage(Sprites.score_four);
 				break;
 			case 5:
-				m_imageLife.setImage(Sprites.score_five);
+				m_imageNumberLife.setImage(Sprites.score_five);
 				break;
 			default :
-				m_imageLife.setImage(Sprites.score_three);
+				m_imageNumberLife.setImage(Sprites.score_three);
 		}
 	}
 
 	public void setScore(int score)
 	{
-		final int SCORE_MAX_DIGITS = 5;
+		int MAX_DIGITS_SCORE = 6;
 		if (score > 999_999)
 			score = 999_999;
 		else if (score < 0)
@@ -123,8 +123,12 @@ public class StateBar {
 		}
 		String scoreText = Integer.toString(score);
 		Image image;
-		for (int i = 0; i != SCORE_MAX_DIGITS; i++)
+		for (int i = 0; i < scoreText.length(); i++)
 		{
+			if (scoreText.length() < MAX_DIGITS_SCORE)
+			{
+				scoreText = "0" + scoreText;
+			}
 			switch (scoreText.charAt(i))
 			{
 				case '0':
