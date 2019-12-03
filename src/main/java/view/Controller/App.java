@@ -34,7 +34,7 @@ public class App extends Application {
         // c'est ce qui controle l'interface
         initInterface();
 
-        physicalMotor = new PhysicalMotor(map);
+        physicalMotor = new PhysicalMotor(map, m_stateBar);
         sounds = new Sounds();
 
         // gère les combinaisons interface + son + et autres

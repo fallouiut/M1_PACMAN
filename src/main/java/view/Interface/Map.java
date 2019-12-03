@@ -25,7 +25,8 @@ public class Map extends Pane {
     public void replaceImage(double x, double y, ENTITIES entity) {
         System.out.println("Map.replaceImage()");
         ImageView imageView = new ImageView();
-        switch (entity) {
+        switch (entity) 
+        {
             case FRUTE:
                 imageView.setImage(Sprites.empty_fruit);
                 break;
@@ -54,7 +55,8 @@ public class Map extends Pane {
     }
 
     public void preserveFrontground(ArrayList<ImageView> ghosts, ImageView pacman) {
-        for (ImageView image : ghosts) {
+        for (ImageView image : ghosts) 
+        {
             getChildren().remove(image);
             getChildren().add(image);
         }

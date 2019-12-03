@@ -6,14 +6,17 @@ import GamePlay.Map.PacMap.ENTITIES;
 import GamePlay.Map.Position;
 import view.Controller.MapController;
 import view.Interface.Sprites;
+import view.Interface.StateBar;
 
 public class PhysicalMotor {
 
     private MapController window;
+    private StateBar stateBar;
 
-    public PhysicalMotor(MapController mapController) throws Exception
+    public PhysicalMotor(MapController mapController, StateBar stateBar) throws Exception
     {
         this.window = mapController;
+        this.stateBar = stateBar;
     }
     
     public void translation(Entity entity, Position end) {
@@ -39,9 +42,12 @@ public class PhysicalMotor {
 
     public void setScore(int score) 
     {
+    	stateBar.setScore(score);
     }
 
-    public void setLife(int life) {
+    public void setLife(int life) 
+    {
+    	stateBar.setLife(life);
     }
 
     public void remove(Entity e, ENTITIES sub) {

@@ -22,9 +22,9 @@ class PacManFruteCollision implements Collision {
     public void takeDecision(GamePlay gamePlay, Entity e1, Entity e2) {
         System.out.println("PacmanFruitCollision.takeDecision()");
         if(e1.getType() == PacMap.ENTITIES.FRUTE)
-            gamePlay.deleteFrute(e1);
+            gamePlay.deleteFrute(e2); // gamePlay.deleteFrute(e1); TODO: avant c'était comme ça et j'ai juste inversé
         else
-            gamePlay.deleteFrute(e2);
+            gamePlay.deleteFrute(e1); // gamePlay.deleteFrute(e2);
     }
 
 }

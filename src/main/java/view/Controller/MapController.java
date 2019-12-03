@@ -51,12 +51,12 @@ public class MapController {
 			}
 			else if (x == 1)
 			{
-				translateTransition.setByY(MapController.CONFIG_X);
+				translateTransition.setByY(MapController.CONFIG_Y);
 		        imageToMove.setImage(Sprites.orientatePacman(imageToMove.getImage(), "DOWN"));
 			}
 			else if (x == -1)
 			{
-				translateTransition.setByY(- MapController.CONFIG_X);
+				translateTransition.setByY(- MapController.CONFIG_Y);
 		        imageToMove.setImage(Sprites.orientatePacman(imageToMove.getImage(), "UP"));
 			}
 	        translateTransition.setAutoReverse(false);
@@ -89,7 +89,7 @@ public class MapController {
 		}
 		else
 			System.err.println("Error in MapController.movePacman()");
-		replaceImage(e, ENTITIES.EMPTY);
+		replaceImage(e, m_pacmap.getMainElem(e.getPosition().getX(), e.getPosition().getY()));
         return true;
 	}
 	
