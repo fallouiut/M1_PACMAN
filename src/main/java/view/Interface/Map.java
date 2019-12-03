@@ -23,7 +23,6 @@ public class Map extends Pane {
     }
 
     public void replaceImage(double x, double y, ENTITIES entity) {
-        System.out.println("Map.replaceImage()");
         ImageView imageView = new ImageView();
         switch (entity) 
         {

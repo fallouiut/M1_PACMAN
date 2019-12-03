@@ -18,7 +18,7 @@ public class PacmanAnimation extends AnimationTimer {
     @Override
     public void handle(long arg0) {
         long elapsedNanoSeconds = System.nanoTime() - m_lastUpdate;
-        double elapsedSeconds = elapsedNanoSeconds / 1_000_000_000.0;
+        double elapsedSeconds = elapsedNanoSeconds / 250_000_000.0;
         if (elapsedSeconds < 1)
             return;
         m_lastUpdate = System.nanoTime();

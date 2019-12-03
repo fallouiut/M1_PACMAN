@@ -155,10 +155,9 @@ public class Ghost extends Entity implements Runnable {
         try {
             // gamePlay.doMove() comme d'hab
             // le truc est déjà fait faudra juste checker la compatibilité avec moveEntity s'il y a des erreurs
-            if (this.gamePlay.doMove(this, lastPosition, nextPosition)) {
-                Position lastOne = this.position;
-                this.position = nextPosition;
-                this.lastPosition = lastOne;
+            Position maybeLast = new Position(this.position.getX(), this.position.getY());
+            if (this.gamePlay.doMove(this, nextPosition)) {
+                this.lastPosition = maybeLast;
             } else {
                 System.out.println("Holding");
             }
@@ -180,5 +179,10 @@ public class Ghost extends Entity implements Runnable {
         } catch (Exception e) {
             System.out.println("Ghost.run() startMoving()");
         }
+    }
+
+
+    public Ghost getGhost() {
+        return this;
     }
 }

@@ -12,11 +12,11 @@ public class PacMap {
     public final static String TEXT_PACMAN = "@";
     public final static String TEXT_GHOST = "&";
     public final static String TEXT_FRUTE = "-";
-    public final static String TEXT_SPEED_POWER = "2";
-    public final static String TEXT_SLOW_GHOST_POWER = "3";
-    public final static String TEXT_KILLING_POWER = "4";
+    public final static String TEXT_SPEED_POWER = "1";
+    public final static String TEXT_SLOW_GHOST_POWER = "2";
+    public final static String TEXT_KILLING_POWER = "3";
     public final static String TEXT_EMPTY = " ";
-    
+
     private Cell[][] labyrinth;
     private String file;
     private GamePlay gamePlay;
@@ -56,7 +56,6 @@ public class PacMap {
     public void load() throws Exception {
         if (file.isEmpty()) throw new Exception("PacMap.load() File is empty");
 
-
         try {
             BufferedReader bfr = new BufferedReader(new FileReader(this.file));
 
@@ -79,17 +78,16 @@ public class PacMap {
             // remplir map
             int i = 0;
             while (((buffer = bfr.readLine()) != null) && (i < labyrinth.length)) {
-
                 for (int j = 0; j < buffer.length(); ++j) {
                     Position pos = new Position(i, j);
-                    ENTITIES entity = PacMap.getByChar(String.valueOf(buffer.charAt(j)));
+                    ENTITIES entity = PacMap.getByChar(String.valueOf(buffer.charAt(j)), i, j);
                     this.labyrinth[i][j] = new Cell(entity, pos);
                     labyrinth[i][j].addElems(ENTITIES.EMPTY);
+
                     this.gamePlay.addEntity(entity, pos);
                 }
                 i += 1;
             }
-
         } catch (Exception e) {
             System.out.println("ERREUR MAP");
             System.out.println(e.getMessage());
@@ -119,7 +117,7 @@ public class PacMap {
         return false;
     }
 
-    public static ENTITIES getByChar(String elem) {
+    public static ENTITIES getByChar(String elem, int i, int j) {
         switch (elem) {
             case TEXT_BLOC:
                 return ENTITIES.BLOC;
@@ -130,10 +128,13 @@ public class PacMap {
             case TEXT_FRUTE:
                 return ENTITIES.FRUTE;
             case TEXT_SLOW_GHOST_POWER:
+                System.out.println("TEXT_SLOW_GHOST_POWER: " + i + ", "  + j);
                 return ENTITIES.SLOW_GHOST_POWER;
             case TEXT_KILLING_POWER:
+                System.out.println("TEXT_KILLING_POWER: " + i + ", "  + j);
                 return ENTITIES.KILLING_POWER;
             case TEXT_SPEED_POWER:
+                System.out.println("TEXT_SPEED_POWER: " + i + ", "  + j);
                 return ENTITIES.SPEED_POWER;
             default:
                 return ENTITIES.EMPTY;
@@ -154,37 +155,6 @@ public class PacMap {
                 return p;
         }
     }
-/*
-    public String printMap() {
-        for (int i = 0; i < labyrinth.length; ++i) {
-            for (int j = 0; j < labyrinth[0].length; ++j) {
-
-                // afficgafe postition
-                PacMap.ENTITIES entity = this.labyrinth[i][j].getMainElem();
-
-                if (entity == ENTITIES.BLOC) {
-                    System.out.print("\u001B[35m" + TEXT_BLOC + "\u001B[0m");
-                }
-                if (entity == ENTITIES.PACMAN) {
-                    System.out.print("\u001B[36m" + TEXT_PACMAN + "\u001B[0m");
-                }
-                if (entity == ENTITIES.FRUTE) {
-                    System.out.print("\u001B[33m" + TEXT_FRUTE + "\u001B[0m");
-                }
-                if (entity == ENTITIES.POWER) {
-                    System.out.print("\u001B[34m" + TEXT_POWER + "\u001B[0m");
-                }
-                if (entity == ENTITIES.GHOST) {
-                    System.out.print("\u001B[31m" + TEXT_GHOST + "\u001B[0m");
-                }
-                if (entity == ENTITIES.EMPTY) {
-                    System.out.print("\u001B[31m" + TEXT_EMPTY + "\u001B[0m");
-                }
-            }
-            System.out.println();
-        }
-        return "NULL";
-    }*/
 
 	public ENTITIES getMainElem(int x, int y) 
 	{

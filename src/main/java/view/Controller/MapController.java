@@ -6,6 +6,7 @@ import GamePlay.Entities.Ghost;
 import GamePlay.Map.Cell;
 import GamePlay.Map.PacMap;
 import GamePlay.Map.PacMap.ENTITIES;
+import GamePlay.Map.Position;
 import view.Interface.Map;
 import view.Interface.Sprites;
 import javafx.animation.TranslateTransition;
@@ -21,7 +22,8 @@ public class MapController {
 	ArrayList <ImageView> m_ghosts = new ArrayList <ImageView> ();
 	private Map m_map = new Map();
 	private PacMap m_pacmap;
-	
+	private Object lock = new Object();
+
 	private ArrayList <Entity> entities = new ArrayList <Entity> ();
 	
 	public void refresh(PacMap pacmap, int speed)
@@ -31,13 +33,13 @@ public class MapController {
 		initializeMap(pacmap);
 	}
 
-	public boolean moveEntity(Entity e, int x, int y, int speed) 
+	public boolean moveEntity(Entity e, Position end, int x, int y, int speed)
 	{
 		ImageView imageToMove = null;
 		if (e.getType() == ENTITIES.PACMAN)
 		{
 			imageToMove = m_pacman;
-			TranslateTransition translateTransition = 
+			TranslateTransition translateTransition =
 					new TranslateTransition(Duration.millis(speed), imageToMove);
 			if (y == 1)
 			{
@@ -66,7 +68,7 @@ public class MapController {
 		{
 			Ghost g = (Ghost) e;
 			imageToMove = m_ghosts.get(g.getNumGhost());
-			TranslateTransition translateTransition = 
+			TranslateTransition translateTransition =
 					new TranslateTransition(Duration.millis(speed), imageToMove);
 			if (y == 1)
 			{
@@ -89,6 +91,14 @@ public class MapController {
 		}
 		else
 			System.err.println("Error in MapController.movePacman()");
+
+		// on enleve l'entité de sa position de départ
+		m_pacmap.removeEntity(e);
+		// on move à sa nouvelle position
+		m_pacmap.moveEntity(e, end);
+		e.setPosition(end);
+		// remplace l'image de départ par son nouvel MainElem
+		// (car l'entité présente qui vient de partir pouvait l'etre)
 		replaceImage(e, m_pacmap.getMainElem(e.getPosition().getX(), e.getPosition().getY()));
         return true;
 	}

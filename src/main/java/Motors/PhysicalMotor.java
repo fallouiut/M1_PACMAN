@@ -20,7 +20,6 @@ public class PhysicalMotor {
     }
     
     public void translation(Entity entity, Position end) {
-        //System.out.println("trnaslate() Current : " + entity.getPosition().toString());
         //System.out.println("PhysicalMotor.translation() new: " + end.toString());
 		int xStart, xEnd, yStart, yEnd, difX, difY;
 		xStart = entity.getPosition().getX();
@@ -31,7 +30,7 @@ public class PhysicalMotor {
 		difY = yEnd - yStart;
 		if (difX != 0 && difY != 0)
 			System.err.println("Error in MapController.movePacman()");
-        window.moveEntity(entity, difX, difY, entity.getSpeed());
+        window.moveEntity(entity, end, difX, difY, entity.getSpeed());
     }
 
     public void loadMap(PacMap stateMap)
@@ -51,7 +50,6 @@ public class PhysicalMotor {
     }
 
     public void remove(Entity e, ENTITIES sub) {
-        System.out.println("PhysicalMotor.removeFrute()");
         window.getMap().replaceImage(e.getPosition().getX(), e.getPosition().getY(), sub);
     }
 }

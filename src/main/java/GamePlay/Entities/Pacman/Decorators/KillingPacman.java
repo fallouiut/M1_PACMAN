@@ -1,22 +1,26 @@
 package GamePlay.Entities.Pacman.Decorators;
 
+import GamePlay.Entities.Pacman.AbstractPacman;
 import GamePlay.GamePlay;
 import GamePlay.Entities.Entity;
 import GamePlay.Entities.Pacman.SimplePacman;
-import GamePlay.Map.Position;
-import GamePlay.Map.PacMap.ENTITIES;
 
 public class KillingPacman extends SimplePacman
 {
 
-	public KillingPacman(Position position, GamePlay gamePlay) {
-		super(position, gamePlay);
+	private AbstractPacman decoratedPacman;
+
+	public KillingPacman(AbstractPacman decoratedPacman, GamePlay gamePlay) {
+		super(decoratedPacman.getPosition(), gamePlay);
+		this.decoratedPacman = decoratedPacman;
 		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
     public Entity chooseWhoToKill(Entity e)
     {
+    	// on ignore decoratedPacman.chooseWhoToKill()
+		System.out.println("Killing");
     	return e;
     }
 	

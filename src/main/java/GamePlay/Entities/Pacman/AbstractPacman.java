@@ -13,4 +13,10 @@ public abstract class AbstractPacman extends Entity {
         this.position = position;
         this.gamePlay = gamePlay;
     }
+
+    public abstract Entity chooseWhoToKill(Entity e);
+
+    public AbstractPacman getPacman() {
+        return this;
+    }
 }

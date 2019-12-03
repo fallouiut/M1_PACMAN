@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cell {
-
     // peut y avoir plusieurs elements même s'il y a collision direct
     private List<PacMap.ENTITIES> elems;
     private final Position position;
@@ -74,6 +73,7 @@ public class Cell {
         return mainOne;
     }
 */
+
     /*
         FONCTION DE MEHDI
         UNE CELLULE PEUT COMPORTER PLUSIEURS ENTITÉS
@@ -82,15 +82,16 @@ public class Cell {
         ORDRES DE PRIORITES = EMPTY < FRUIT < POWER < BLOC < PACMAN < GHOST
      */
     public PacMap.ENTITIES getMainElem() {
-
-        boolean bloc, pacman, ghost, frute, power;
+        boolean bloc, pacman, ghost, frute, speedPower, killPower, slowGhostPower;
         bloc = false;
         pacman = false;
         ghost = false;
         frute = false;
-        power = false;
-        for (PacMap.ENTITIES elem : elems)
-        {
+        speedPower = false;
+        killPower = false;
+        slowGhostPower = false;
+
+        for (PacMap.ENTITIES elem : elems) {
             if (elem == PacMap.ENTITIES.GHOST)
                 ghost = true;
             if (elem == PacMap.ENTITIES.PACMAN)
@@ -99,14 +100,20 @@ public class Cell {
                 bloc = true;
             if (elem == PacMap.ENTITIES.FRUTE)
                 frute = true;
-            if (elem == PacMap.ENTITIES.SLOW_GHOST_POWER || elem == PacMap.ENTITIES.KILLING_POWER || elem == PacMap.ENTITIES.SPEED_POWER)
-                power = true;
+            if (elem == PacMap.ENTITIES.SLOW_GHOST_POWER)
+                slowGhostPower = true;
+            if (elem == PacMap.ENTITIES.KILLING_POWER)
+                killPower = true;
+            if (elem == PacMap.ENTITIES.SPEED_POWER)
+                speedPower = true;
         }
 
         if (ghost) return PacMap.ENTITIES.GHOST;
         if (pacman) return PacMap.ENTITIES.PACMAN;
         if (bloc) return PacMap.ENTITIES.BLOC;
-        if (power) return PacMap.ENTITIES.KILLING_POWER; // TODO: source de bug, rajouter un booleen pour chaque power
+        if (speedPower) return PacMap.ENTITIES.SPEED_POWER;
+        if (slowGhostPower) return PacMap.ENTITIES.SLOW_GHOST_POWER;
+        if (killPower) return PacMap.ENTITIES.KILLING_POWER;
         if (frute) return PacMap.ENTITIES.FRUTE;
         return PacMap.ENTITIES.EMPTY;
     }

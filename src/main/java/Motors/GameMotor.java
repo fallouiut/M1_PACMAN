@@ -52,7 +52,6 @@ public class GameMotor {
     }  
 
     public void makeMove(Entity entity, Position end) {
-        //System.out.println("gameMotor.makeMove()");
         physicalMotor.translation(entity, end);
     }
 	
