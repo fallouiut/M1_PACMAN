@@ -82,8 +82,7 @@ public class App extends Application {
         stage.show();
     }
 
-    public void initInterface()
-    {
+    public void initInterface() {
         new Sprites();
         map = new MapController();
         createStateBar(GamePlay.LIFE_NUMBER);
@@ -94,8 +93,7 @@ public class App extends Application {
         m_pacmanAnim = new PacmanAnimation(map);
     }
 
-    private void createStateBar(int numberLife)
-    {
+    private void createStateBar(int numberLife) {
         m_stateBar = new StateBar(numberLife);
     }
 

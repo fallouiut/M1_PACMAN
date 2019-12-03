@@ -17,7 +17,7 @@ public class GameMotor {
     }
 
     public void launchParty(PacMap stateMap) {
-        System.out.println("launchParty");
+        //System.out.println("launchParty");
         physicalMotor.loadMap(stateMap);
     }
 
@@ -52,7 +52,7 @@ public class GameMotor {
     }  
 
     public void makeMove(Entity entity, Position end) {
-        System.out.println("gameMotor.makeMove()");
+        //System.out.println("gameMotor.makeMove()");
         physicalMotor.translation(entity, end);
     }
 	
@@ -64,4 +64,15 @@ public class GameMotor {
     public void setLife(int life) {
     	physicalMotor.setLife(life);
     }
+
+    public void deleteFrute(Entity e, PacMap.ENTITIES sub) {
+        physicalMotor.remove(e, sub);
+        Sounds.fruit();
+    }
+
+    public void removePacman(Entity e, PacMap.ENTITIES sub) {
+        physicalMotor.remove(e, sub);
+        Sounds.death();
+    }
+
 }

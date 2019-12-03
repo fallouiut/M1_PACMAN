@@ -89,7 +89,7 @@ public class MapController {
 		}
 		else
 			System.err.println("Error in MapController.movePacman()");
-		replaceImage(e, m_pacmap.getMainElem(e.getPosition().getX(), e.getPosition().getY()));
+		replaceImage(e, ENTITIES.EMPTY);
         return true;
 	}
 	

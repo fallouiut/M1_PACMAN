@@ -20,6 +20,7 @@ class PacManFruteCollision implements Collision {
 
     @Override
     public void takeDecision(GamePlay gamePlay, Entity e1, Entity e2) {
+        System.out.println("PacmanFruitCollision.takeDecision()");
         if(e1.getType() == PacMap.ENTITIES.FRUTE)
             gamePlay.deleteFrute(e1);
         else

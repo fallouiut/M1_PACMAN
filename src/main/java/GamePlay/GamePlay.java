@@ -8,6 +8,7 @@ import GamePlay.Map.PacMap;
 import GamePlay.Map.Position;
 import Motors.GameMotor;
 
+import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -113,29 +114,32 @@ public class GamePlay {
         if (map.isPosition(end)) {
             Position position = entity.getPosition();
             boolean found = map.find(entity, position);
-            System.out.println("doMove()");
+            //System.out.println("doMove()");
             if (found) {
-                // moteur de jeu
-                PacMap.ENTITIES mainAtNewPos = map.getLabyrinth()[position.getX()][position.getY()].getMainElem();
+                if(!isBloc(end)) {
+                    // moteur de jeu
+                    System.out.println("Position: " + entity.getPosition().toString());
+                    System.out.println("Needed: " + end.toString());
+                    PacMap.ENTITIES mainAtNewPos = map.getLabyrinth()[end.getX()][end.getY()].getMainElem();
 
+                    gameMotor.makeMove(entity, end);
 
-                gameMotor.makeMove(entity, end);
+                    // met a jour la map
+                    map.removeEntity(entity);
+                    map.moveEntity(entity, end);
 
-                // on récupere l'entité principale à la position end
-                // verifie s'il y a collision entre les deux
-                handleCollision(entity, new Entity(mainAtNewPos, end) {
-                    @Override
-                    public PacMap.ENTITIES getType() {
-                        return mainAtNewPos;
-                    }
-                });
-
-                // met a jour la map
-                map.removeEntity(entity);
-                map.moveEntity(entity, end);
+                    // on récupere l'entité principale à la position end
+                    // verifie s'il y a collision entre les deux
+                    handleCollision(entity, new Entity(mainAtNewPos, end) {
+                        @Override
+                        public PacMap.ENTITIES getType() {
+                            return mainAtNewPos;
+                        }
+                    });
+                    entity.setPosition(end);
+                } else System.out.println("BLOC");;
 
                 // met a jour avec sa nouvelle position
-                entity.setPosition(end);
                 return true;
             } else {
                 return false;
@@ -147,6 +151,8 @@ public class GamePlay {
     }
 
     public void handleCollision(Entity p1, Entity p2) {
+        System.out.println("handleCollision()");
+        System.out.println("E1: " + p1.getType() + " E2: " + p2.getType());
         for (Collision collision : collisions) {
             if (collision.match(p1, p2)) { // chaque type de collision verifie s'il est impliqué
                 // si oui, il appelle gamePlay pour l'action à faire
@@ -161,20 +167,30 @@ public class GamePlay {
         if (this.map.find(PacMap.ENTITIES.FRUTE, e.getPosition())) {
             synchronized (fruteLock) {
                 frutesNumber--;
-                // TODO: map.removeEntity(ENTITIES.FRUTE, p)
-                // TODO: gameMotor.deleteFrute(p);
-
+                System.out.println("Frute number: " + frutesNumber);
+                map.removeEntity(e);
+                gameMotor.deleteFrute(e, map.getMainElem(e.getPosition().getX(), e.getPosition().getY()));
                 if (frutesNumber == 0) {
                     // TODO: gameMotor.gameWon()
                     // TODO: this.nextLvl()
+                    System.out.println("GAGNARE");
+                    JOptionPane.showConfirmDialog(null, "Vous avez gagné");
                 }
             }
         }
     }
 
+    public void ghostCollision(Entity ghost) {
+        killPacman();
+        // en fonction des pouvoirs de chacun
+        // tue le pacman ou le ghost
+    }
+
     // conclusion d'une collision avec ghost
     public void killPacman() {
         map.removeEntity(main);
+        gameMotor.removePacman(main, map.getMainElem(main.getPosition().getX(), main.getPosition().getY()));
+        JOptionPane.showConfirmDialog(null, "Perdu");
         // TODO: verifier pouvoirs avant de tuer
         // TODO: main.stop()
         // TODO: gameMotor.deletePacman(p)
@@ -188,13 +204,10 @@ public class GamePlay {
         // TODO: game.deleteGhost(p)
     }
 
-    public void ghostCollision(Entity e) {
-    }
-
     public void start() {
         System.out.println("start");
         gameMotor.launchParty(this.map);
-        startEntities();
+        //startEntities();
     }
 
     public void nextLevel() throws Exception {

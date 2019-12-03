@@ -10,7 +10,6 @@ import view.Interface.Sprites;
 public class PhysicalMotor {
 
     private MapController window;
-    private PacMap stateMap;
 
     public PhysicalMotor(MapController mapController) throws Exception
     {
@@ -18,7 +17,8 @@ public class PhysicalMotor {
     }
     
     public void translation(Entity entity, Position end) {
-        System.out.println("PhysicalMotor.translation()");
+        //System.out.println("trnaslate() Current : " + entity.getPosition().toString());
+        //System.out.println("PhysicalMotor.translation() new: " + end.toString());
 		int xStart, xEnd, yStart, yEnd, difX, difY;
 		xStart = entity.getPosition().getX();
 		xEnd = end.getX();
@@ -33,7 +33,7 @@ public class PhysicalMotor {
 
     public void loadMap(PacMap stateMap)
     {
-        System.out.println("loadMap");
+        //System.out.println("loadMap");
     	window.initializeMap(stateMap);
     }
 
@@ -42,5 +42,10 @@ public class PhysicalMotor {
     }
 
     public void setLife(int life) {
+    }
+
+    public void remove(Entity e, ENTITIES sub) {
+        System.out.println("PhysicalMotor.removeFrute()");
+        window.getMap().replaceImage(e.getPosition().getX(), e.getPosition().getY(), sub);
     }
 }
