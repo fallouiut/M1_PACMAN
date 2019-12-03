@@ -185,4 +185,10 @@ public class PacMap {
         }
         return "NULL";
     }*/
+
+	public ENTITIES getMainElem(int x, int y) 
+	{
+		Cell cell = labyrinth[x][y];
+		return cell.getMainElem();
+	}
 }

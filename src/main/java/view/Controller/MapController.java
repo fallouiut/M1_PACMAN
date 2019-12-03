@@ -9,7 +9,6 @@ import GamePlay.Map.PacMap.ENTITIES;
 import view.Interface.Map;
 import view.Interface.Sprites;
 import javafx.animation.TranslateTransition;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
@@ -21,6 +20,7 @@ public class MapController {
 	ImageView m_pacman;
 	ArrayList <ImageView> m_ghosts = new ArrayList <ImageView> ();
 	private Map m_map = new Map();
+	private PacMap m_pacmap;
 	
 	private ArrayList <Entity> entities = new ArrayList <Entity> ();
 	
@@ -33,10 +33,6 @@ public class MapController {
 
 	public boolean moveEntity(Entity e, int x, int y, int speed) 
 	{
-		// TODO: t'as pas a faire tout ca
-		// fais juste la translation et renvoie un booleen s'il y a une collision
-		// Vraiment map controller s'ocupe que de bouger les éléments sans aucune intellignece.
-		// t'as pas a t'occuper de qui remplacer ou quoi, ca on s'en occupe plus haut dans gameplay
 		ImageView imageToMove = null;
 		if (e.getType() == ENTITIES.PACMAN)
 		{
@@ -65,11 +61,6 @@ public class MapController {
 			}
 	        translateTransition.setAutoReverse(false);
 	        translateTransition.play();
-			//replaceImage(e, pacMap.getMainElem(p));
- 			// TODO: faut faire un getMainElem() car si ya un ghost juste après, c'est bizarre
-			// TODO: :donc passer l'ancienne position en parametre pour pouvoir modifier la case
-			// TODO de l'ancienne position de pacman
-			// vu que pacman mange les fruits, ce sera souvent une entite vide
 		}
 		else if (e.getType() == ENTITIES.GHOST)
 		{
@@ -95,10 +86,10 @@ public class MapController {
 			}
 	        translateTransition.setAutoReverse(false);
 	        translateTransition.play();
-			//replaceImage(e, ENTITIES.FRUTE); // TODO: recupérer ici l'entité "en dessous" du ghost
 		}
 		else
 			System.err.println("Error in MapController.movePacman()");
+		replaceImage(e, m_pacmap.getMainElem(e.getPosition().getX(), e.getPosition().getY()));
         return true;
 	}
 	
@@ -123,7 +114,8 @@ public class MapController {
 	public void initializeMap(PacMap pacmap)
 	{
 		System.out.println("initMap");
-		Cell[][] cells = pacmap.getLabyrinth();
+		m_pacmap = pacmap;
+		Cell[][] cells = m_pacmap.getLabyrinth();
 		Cell currentCell;
 		double x = 0;
 		double y = 0;

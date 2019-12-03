@@ -29,8 +29,6 @@ public class PhysicalMotor {
 		if (difX != 0 && difY != 0)
 			System.err.println("Error in MapController.movePacman()");
         window.moveEntity(entity, difX, difY, entity.getSpeed());
-        // entity.setPosition(end);
-        // le changement de position est fait dans doMove()
     }
 
     public void loadMap(PacMap stateMap)
