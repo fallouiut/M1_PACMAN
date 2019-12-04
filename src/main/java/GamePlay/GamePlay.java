@@ -235,7 +235,6 @@ public class GamePlay {
             ghosts.remove(g);
             buffer = new SpeedLessGhostPacman(buffer, this, 7);
             ghosts.add(buffer);
-
         }
 
 /*
