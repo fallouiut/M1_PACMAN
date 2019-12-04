@@ -19,14 +19,19 @@ import java.util.List;
 
 public class GamePlay {
 
+	private static final int FRUIT_SCORE = 100;
+	private static final int GHOST_SCORE  = 300;
+	private static final int SUPERFRUIT_SCORE = 200;
+	private int totalScore = 0;
+	
     private final String MAP_PATH = "files/maps/map-test.txt";
     public final static int TIME_TO_WAIT = 1000;
-    public final static int POWER_TIME_SEC = 30;
 
     private AbstractPacman main;
     private PacMap map;
 
-    private int currentLevel = 1;
+    private Level currentLevel;
+    private int lifeLeft;
 
     private List<Collision> collisions = new ArrayList<Collision>();
 
@@ -166,7 +171,8 @@ public class GamePlay {
         if (this.map.find(PacMap.ENTITIES.FRUTE, e.getPosition())) {
             synchronized (fruteLock) {
                 frutesNumber--;
-
+            	totalScore = totalScore + getPoints(e);
+            	gameMotor.setScore(totalScore);
                 map.removeEntity(e);
 
                 if (frutesNumber == 0) {
@@ -183,12 +189,11 @@ public class GamePlay {
         System.out.println(main.toString());
         Entity killed = main.chooseWhoToKill(ghost);
         if (killed.getType() == PacMap.ENTITIES.GHOST) {
-            //killGhost((Ghost) ghost);
+            	killGhost((Ghost) ghost);
             // TODO: gameMotor.removeGhost(ghost)
-        } else if (killed.getType() == PacMap.ENTITIES.PACMAN) {
-            //killPacman();
-            // TODO: this.killPacman(): fais dans un premier temps juste enleve le de la map pareil pour ghost
-            JOptionPane.showConfirmDialog(null, "VOUS ETES MORT ");
+        } else if (killed.getType() == PacMap.ENTITIES.PACMAN) 
+        {
+            hurtPacman();
         }
     }
 
@@ -204,6 +209,8 @@ public class GamePlay {
             case SLOW_GHOST_POWER:
                 freezeGhosts();
                 break;
+            default:
+            	break;
         }
         // TODO: si tu peux mettre un son de pouvoir
          //TODO: new PowerTimeThread(this, POWER_TIME_SEC, e.getType()).start();
@@ -267,10 +274,22 @@ public class GamePlay {
         // TODO: gameMotor.restart(this.lvl)
 
     }
+    
+    public void hurtPacman()
+    {
+    	lifeLeft--;
+    	if (lifeLeft > 0)
+    		gameMotor.loseLife();
+    	else
+    		killPacman();
+		gameMotor.setLife(lifeLeft);
+    }
 
     public void killGhost(Ghost g) {
         // TODO: ghosts.getByPosition(p).stop
         // TODO: game.deleteGhost(p)
+    	totalScore = totalScore + getPoints(g);
+    	gameMotor.setScore(totalScore);
     }
 
     public void start() {
@@ -289,8 +308,22 @@ public class GamePlay {
                 this.frutesNumber = 0;
                 this.main = null;
                 this.ghosts.removeAll(this.ghosts);
-                //this.currentLevel += 1;
-
+                this.totalScore = 0;
+                if (currentLevel == null)
+                {
+                    currentLevel = new Level(3, 1);
+                    lifeLeft = currentLevel.getLevelLife();
+                }
+                else
+                {
+                    int currentLevelNum = currentLevel.getlevelNumber();
+                    int nextLifeAmount = currentLevel.getLevelLife();
+                    if (nextLifeAmount > 1)
+                    	nextLifeAmount--;
+                    currentLevel = new Level(currentLevelNum + 1, nextLifeAmount);
+                    lifeLeft = currentLevel.getLevelLife();
+                }
+                gameMotor.setLife(lifeLeft);
                 this.map.destroy();
                 this.map.setPath(path);
                 this.map.load();
@@ -306,6 +339,28 @@ public class GamePlay {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+    }
+    
+    public int getPoints(Entity e)
+    {
+    	switch (e.getType())
+    	{
+    		case FRUTE:
+    			return FRUIT_SCORE;
+    		case GHOST:
+    			return GHOST_SCORE;
+    		case KILLING_POWER:
+    		case SLOW_GHOST_POWER:
+    		case SPEED_POWER:
+    			return SUPERFRUIT_SCORE;
+			default:
+				return 0;
+    	}
+    }
+
+    public Level getLevel()
+    {
+    	return currentLevel;
     }
 
     public PacMap getMap() {

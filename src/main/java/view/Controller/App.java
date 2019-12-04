@@ -85,7 +85,7 @@ public class App extends Application {
     public void initInterface() {
         new Sprites();
         map = new MapController();
-        createStateBar(GamePlay.LIFE_NUMBER);
+        createStateBar(0);
         BorderPane pane = new BorderPane();
         pane.setCenter(map.getMap());
         pane.setBottom(m_stateBar.getBar());
