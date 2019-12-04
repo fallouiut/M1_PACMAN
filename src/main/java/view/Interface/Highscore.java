@@ -26,8 +26,10 @@ public class Highscore {
 			{
 				if (i == 0)
 					pane.add(createHighscoreImage(Sprites.statebarBackground), j, i);
+				else if (j < 2 || j > 21)
+					pane.add(createHighscoreImage(Sprites.empty), j, i);
 				else if (i < highscores.size())
-					pane.add(highscores.get(i).get(j), j, i);
+					pane.add(highscores.get(i).get(j - 2), j, i);
 				else
 					pane.add(createHighscoreImage(Sprites.statebarBackground), j, i);
 			}
@@ -58,17 +60,15 @@ public class Highscore {
 		ArrayList <ImageView> highscoreLineImages = new ArrayList <ImageView> ();
 		final int SCORE_LENGTH = 6;
 		ImageView image;
-		for (int i = 0; i < highscoreLine.length(); i++)
+		for (int i = 0; i != highscoreLine.length(); i++)
 		{
-			if (i < 4 || i > 20)
-				image = createHighscoreImage(Sprites.empty);
-			else if (i > highscoreLine.length() - SCORE_LENGTH)
+			if (i > highscoreLine.length() - SCORE_LENGTH - 1)
 			{
-				int digitScore = Integer.valueOf("" + highscoreLine.charAt(i - 4));
+				int digitScore = Integer.valueOf("" + highscoreLine.charAt(i));
 				image = createHighscoreImage(Sprites.getNumSprite(digitScore));
 			}
 			else
-				image = createHighscoreImage(Sprites.getLetterSprite(highscoreLine.charAt(i - 4)));
+				image = createHighscoreImage(Sprites.getLetterSprite(highscoreLine.charAt(i)));
 			highscoreLineImages.add(image);				
 		}
 		return highscoreLineImages;

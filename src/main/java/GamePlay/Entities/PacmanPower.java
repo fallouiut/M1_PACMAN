@@ -6,14 +6,10 @@ import GamePlay.GamePlay;
 import GamePlay.Map.Position;
 
 public class PacmanPower {
-	private static final int LASTING = 5;
-    private float time;
 
     private Position currentPosition;
     private GamePlay gamePlay;
     private TYPE type;
-    // TODO: choisir des motifs pour chacun d'entre eux
-    // TODO: pouvoir les génerer aléatoirement avec timers de début et de fin
     public enum TYPE { NONE, INVINCIBLE_PACMAN, KILLING_GHOST, MORE_PACMAN_SPEED, LESS_GHOST_SPEED }
 
     public PacmanPower(Position position) 
@@ -21,30 +17,7 @@ public class PacmanPower {
         this.currentPosition = position;
         this.gamePlay = gamePlay;
         this.type = pickPower();
-        this.time = System.nanoTime();
-        applyPower();
     }
-    
-    private void applyPower()
-    {
-        
-        float elapsedNanoSeconds;
-        double elapsedSeconds;
-        while (true)
-        {
-            elapsedNanoSeconds = System.nanoTime() - time;
-            elapsedSeconds = elapsedNanoSeconds / 1_000_000_000.0;
-            if (elapsedSeconds > LASTING)
-            	break;
-        }
-        removePower();
-    }
-
-	private void removePower() 
-	{
-		// TODO Auto-generated method stub
-		
-	}
 	
 	private TYPE pickPower()
 	{

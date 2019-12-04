@@ -10,7 +10,6 @@ import GamePlay.Entities.Pacman.SimplePacman;
 import GamePlay.Map.PacMap;
 import GamePlay.Map.Position;
 import Motors.GameMotor;
-
 import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ public class GamePlay {
 	private static final int FRUIT_SCORE = 100;
 	private static final int GHOST_SCORE  = 300;
 	private static final int SUPERFRUIT_SCORE = 200;
+	private static final int POWER_LASTING = 5;
 	private int totalScore = 0;
 	
     private final String MAP_PATH = "files/maps/map-test.txt";
@@ -41,7 +41,6 @@ public class GamePlay {
     private Object moveLock = new Object();
     private Object fruteLock = new Object();
     private volatile int frutesNumber = 0;
-    public static final int LIFE_NUMBER = 5;
 
     GameMotor gameMotor;
 
@@ -212,13 +211,27 @@ public class GamePlay {
             default:
             	break;
         }
-        // TODO: si tu peux mettre un son de pouvoir
-         //TODO: new PowerTimeThread(this, POWER_TIME_SEC, e.getType()).start();
-        // TODO: qui, dans un thread lance un miniteur et a la fin appelle gamePlay.stopPower()
+        gameMotor.takeBonus(); // Sound
+        Thread bonusTimer = new Thread(new Runnable()
+        {
+           public void run()
+           {
+               long start = System.nanoTime();
+               double elapsedSeconds;
+               while (true)
+               {
+            	   elapsedSeconds = (System.nanoTime() - start) / 250_000_000.0;
+            	   System.out.println(elapsedSeconds);
+            	   if (elapsedSeconds > POWER_LASTING)
+            		   break;
+               }
+        	   stopPower(e.getType());       	   
+           }
+        });
+        bonusTimer.start();
     }
 
     public void stopPower(PacMap.ENTITIES power) {
-        // TODO: appelé du thread, elle enleve les pouvoirs
         switch (power) {
             case KILLING_POWER:
                 main = main.getPacman();
