@@ -36,26 +36,8 @@ public class StateBar {
 		m_imageLife = new ImageView(Sprites.pacman_left2);
 		m_imageLife.setFitHeight(MapController.CONFIG_X); 
 		m_imageLife.setFitWidth(MapController.CONFIG_Y);   
-		switch (initialNumberLife)
-		{
-			case 1:
-				m_imageNumberLife = new ImageView(Sprites.score_one);
-				break;
-			case 2:
-				m_imageNumberLife = new ImageView(Sprites.score_two);
-				break;
-			case 3:
-				m_imageNumberLife = new ImageView(Sprites.score_three);
-				break;
-			case 4:
-				m_imageNumberLife = new ImageView(Sprites.score_four);
-				break;
-			case 5:
-				m_imageNumberLife = new ImageView(Sprites.score_five);
-				break;
-			default :
-				m_imageNumberLife = new ImageView(Sprites.score_three);
-		}
+		
+		m_imageNumberLife = new ImageView(Sprites.getNumSprite(initialNumberLife));
 		m_imageNumberLife.setFitHeight(MapController.CONFIG_X); 
 		m_imageNumberLife.setFitWidth(MapController.CONFIG_Y);  
 		

@@ -4,6 +4,8 @@ import GamePlay.GamePlay;
 import Motors.GameMotor;
 import Motors.PhysicalMotor;
 import javafx.scene.layout.BorderPane;
+import view.Interface.Highscore;
+import view.Interface.Menu;
 import view.Interface.PacmanAnimation;
 import view.Interface.Sounds;
 import javafx.application.Application;
@@ -22,34 +24,92 @@ public class App extends Application {
     private StateBar m_stateBar;
     private Scene root;
     private MapController map;
+    private BorderPane pane;
 
     /* OBJETS DU JEU */
     private GamePlay gamePlay;
     private GameMotor gameMotor;
     private PhysicalMotor physicalMotor;
     private Sounds sounds;
+    
+    private Stage stage;
 
     public void start(Stage stage) throws Exception {
-        // qui fait les translations et detections de collision
-        // c'est ce qui controle l'interface
-        initInterface();
-
+    	this.stage = stage;
+        this.pane = initInterface();
         physicalMotor = new PhysicalMotor(map, m_stateBar);
         sounds = new Sounds();
-
-        // gère les combinaisons interface + son + et autres
         gameMotor = new GameMotor(physicalMotor, sounds);
-
-        // gere les mouvements tout en appliquant les regles du jeu
         gamePlay = new GamePlay();
         gamePlay.setGameMotor(gameMotor);
+        stage.setTitle("Pacman");
+        try {
+            // lance le jeu
+            gamePlay.nextLevel();
+        } catch (Exception e) {
+            System.out.println("ApplicationController.start()");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+        
+        displayMenu();
+        stage.show();
+    }
 
-        // CHAQUE MOUVEMENT SUIT CET ORDRE
-        // Gampley (qui vérifie le mouvement suit les regles)
-        // qui appelle Moteur de jeu (qui effectue les actions graphiques et sonores)
-        // Moteur physique (qui controle l'interface et detecte les collisions)
+    public BorderPane initInterface() {
+        new Sprites();
+        map = new MapController();
+        createStateBar(0);
+        BorderPane pane = new BorderPane();
+        pane.setCenter(map.getMap());
+        pane.setBottom(m_stateBar.getBar());
+        m_pacmanAnim = new PacmanAnimation(map);
+        return pane;
+    }
 
-        // ecouteurs mouvement
+    private void createStateBar(int numberLife) {
+        m_stateBar = new StateBar(numberLife);
+    }
+    
+    private void displayMenu()
+    {
+    	Menu menu = new Menu();
+    	root = new Scene(menu.getRoot());
+    	root.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() 
+        {
+        	String currentPos = menu.getCurrentPos();
+            public void handle(KeyEvent ke) {
+                String key = "";
+                if (ke.getCode() == KeyCode.ENTER)
+                {
+                	switch (currentPos)
+                	{
+                		case "QUIT" :
+                			System.exit(0);
+                		case "PLAY" :
+                			launchGame();
+                			break;
+                		case "HIGHSCORE":
+                			displayHighscore();
+                			break;
+                	}
+                }
+                else if (ke.getCode() == KeyCode.DOWN)
+                    key = "DOWN";
+                else if (ke.getCode() == KeyCode.UP)
+                    key = "UP";
+                ke.consume();
+                currentPos = menu.selectMenuChoice(key, currentPos);
+                menu.setCurrentPos(currentPos);
+                System.out.println(currentPos);
+            }
+        });
+        stage.setScene(root);
+    }
+    
+    private void launchGame()
+    {
+        root = new Scene(pane);
         root.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             public void handle(KeyEvent ke) {
                 String key = "";
@@ -62,41 +122,31 @@ public class App extends Application {
                 else if (ke.getCode() == KeyCode.UP)
                     key = "UP";
                 else if (ke.getCode() == KeyCode.ESCAPE)
-                    //refresh();
+                    displayMenu();
                     ke.consume();
                 gamePlay.pacmanMove(key);
             }
         });
-
-        try {
-            // lance le jeu
-            gamePlay.nextLevel();
-            m_pacmanAnim.start();
-        } catch (Exception e) {
-            System.out.println("ApplicationController.start()");
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
+        m_pacmanAnim.start();
         stage.setScene(root);
-        stage.setTitle("Pacman");
-        stage.show();
     }
 
-    public void initInterface() {
-        new Sprites();
-        map = new MapController();
-        createStateBar(0);
-        BorderPane pane = new BorderPane();
-        pane.setCenter(map.getMap());
-        pane.setBottom(m_stateBar.getBar());
-        root = new Scene(pane);
-        m_pacmanAnim = new PacmanAnimation(map);
+    private void displayHighscore()
+    {
+    	Highscore highscore = new Highscore();
+    	root = new Scene(highscore.getRoot());
+    	root.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() 
+        {
+            public void handle(KeyEvent ke) {
+                String key = "";
+                if (ke.getCode() == KeyCode.ESCAPE)
+                {
+                	displayMenu();
+                }
+            }
+        });
+        stage.setScene(root);
     }
-
-    private void createStateBar(int numberLife) {
-        m_stateBar = new StateBar(numberLife);
-    }
-
     public static void main(String[] args) {
         launch(args);
     }
