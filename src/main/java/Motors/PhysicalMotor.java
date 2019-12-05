@@ -5,7 +5,6 @@ import GamePlay.Map.PacMap;
 import GamePlay.Map.PacMap.ENTITIES;
 import GamePlay.Map.Position;
 import view.Controller.MapController;
-import view.Interface.Sprites;
 import view.Interface.StateBar;
 
 public class PhysicalMotor {
@@ -20,7 +19,6 @@ public class PhysicalMotor {
     }
     
     public void translation(Entity entity, Position end) {
-        //System.out.println("PhysicalMotor.translation() new: " + end.toString());
 		int xStart, xEnd, yStart, yEnd, difX, difY;
 		xStart = entity.getPosition().getX();
 		xEnd = end.getX();
@@ -35,7 +33,6 @@ public class PhysicalMotor {
 
     public void loadMap(PacMap stateMap)
     {
-        //System.out.println("loadMap");
     	window.initializeMap(stateMap);
     }
 
@@ -49,7 +46,9 @@ public class PhysicalMotor {
     	stateBar.setLife(life);
     }
 
-    public void remove(Entity e, ENTITIES sub) {
-        window.getMap().replaceImage(e.getPosition().getX(), e.getPosition().getY(), sub);
+    public void remove(Entity e) {
+        System.out.println("physicalMotor.remove()");
+        window.deleteEntity(e);
+        //window.getMap().replaceImage(e.getPosition().getX(), e.getPosition().getY(), ENTITIES.EMPTY);
     }
 }

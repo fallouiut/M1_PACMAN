@@ -130,24 +130,19 @@ public class Ghost extends Entity implements Runnable {
         return lastPosition;
     }
 
-    public void stop() {
-        // attendre un temps limité selon le niveau
-        try {
-            TimeUnit.MILLISECONDS.sleep(GamePlay.TIME_TO_WAIT);
-            choose();
-        } catch (Exception e) {
-            System.out.println("Ghost.stop(): maybe TimeUnit.sleep()");
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
     /*
         on boucle et on choisit un mouvement
      */
     public void startMoving() {
         while (!killed) {
             choose();
+            try {
+                TimeUnit.MILLISECONDS.wait(100);
+            } catch (Exception e) {
+                System.out.println("Ghost.startMoving()");
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 
@@ -184,5 +179,20 @@ public class Ghost extends Entity implements Runnable {
 
     public Ghost getGhost() {
         return this;
+    }
+
+    @Override
+    public Position getPosition() {
+        return this.position;
+    }
+
+    @Override
+    public void setPosition(Position p) {
+        this.position = p;
+    }
+
+    @Override
+    public int getSpeed() {
+        return this.speed;
     }
 }

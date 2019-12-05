@@ -96,11 +96,14 @@ public class MapController {
 		m_pacmap.removeEntity(e);
 		// on move à sa nouvelle position
 		m_pacmap.moveEntity(e, end);
+
+
+		Entity copy = new Entity(e.getType(), e.getPosition());// position de départ
 		e.setPosition(end);
 		// remplace l'image de départ par son nouvel MainElem
 		// (car l'entité présente qui vient de partir pouvait l'etre)
-		replaceImage(e, m_pacmap.getMainElem(e.getPosition().getX(), e.getPosition().getY()));
-        return true;
+		replaceImage(copy, m_pacmap.getMainElem(copy.getPosition().getX(), copy.getPosition().getY()));
+		return true;
 	}
 	
 	private void replaceImage(Entity e, ENTITIES replaceByThisEntity) 
@@ -147,7 +150,6 @@ public class MapController {
 				else if (currentCell.getMainElem() == ENTITIES.PACMAN)
 				{
 					//entities.add(new PacmanEntity(new Position(x, y)));
-					System.out.println("pacman trouvé");
 					m_pacman = m_map.addTile(Sprites.pacman_left2, x, y, ENTITIES.PACMAN);
 				}
 				else if (currentCell.getMainElem() == ENTITIES.GHOST)
@@ -171,7 +173,16 @@ public class MapController {
 			}
 		}
 	}
-	
+
+	public void deleteEntity(Entity toDelete) {
+		// le supprimer definitivement de l'image LOL avant de la remplacer
+		m_pacmap.removeEntity(toDelete);
+		System.out.println("------------------- ghost-------------------------");
+		ENTITIES mainAtThisPos = m_pacmap.getMainElem(toDelete.getPosition().getX(), toDelete.getPosition().getY());
+		ENTITIES toReplace = m_pacmap.find(ENTITIES.FRUTE, toDelete.getPosition()) ? ENTITIES.FRUTE: ENTITIES.EMPTY;
+		this.replaceImage(toDelete, toReplace);
+	}
+
 	public ArrayList <Entity> getEntities()
 	{
 		return entities;

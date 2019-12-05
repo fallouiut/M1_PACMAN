@@ -1,6 +1,7 @@
 package Motors;
 
 import GamePlay.Entities.Entity;
+import GamePlay.Entities.Ghost;
 import GamePlay.GamePlay;
 import GamePlay.Map.PacMap;
 import GamePlay.Map.Position;
@@ -65,13 +66,18 @@ public class GameMotor {
     }
 
     public void deleteFrute(Entity e, PacMap.ENTITIES sub) {
-        physicalMotor.remove(e, sub);
+        //physicalMotor.remove(e, sub);
         Sounds.fruit();
     }
 
     public void removePacman(Entity e, PacMap.ENTITIES sub) {
-        physicalMotor.remove(e, sub);
+        //physicalMotor.remove(e, sub);
         Sounds.death();
     }
 
+    public void removeGhost(Ghost g) {
+        System.out.println("GameMotor.removeGhost()");
+        physicalMotor.remove(g);
+        Sounds.lifeLost();
+    }
 }

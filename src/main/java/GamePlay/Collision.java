@@ -1,6 +1,7 @@
 package GamePlay;
 
 import GamePlay.Entities.Entity;
+import GamePlay.Entities.Ghost;
 import GamePlay.Map.PacMap;
 
 public interface Collision {
@@ -33,6 +34,9 @@ class PacManGhostCollision implements Collision {
     @Override
     public boolean match(Entity e1, Entity e2) {
         boolean affirmation1, affirmation2;
+        System.out.println("PowerGostCollision().match()");
+        System.out.println("e1: " + e1.getPosition().toString());
+        System.out.println("e2: " + e2.getPosition().toString());
         affirmation1 = e1.getType() == PacMap.ENTITIES.PACMAN && e2.getType() == PacMap.ENTITIES.GHOST;
         affirmation2 = e2.getType() == PacMap.ENTITIES.PACMAN && e1.getType() == PacMap.ENTITIES.GHOST;
         return affirmation1 || affirmation2;
@@ -40,10 +44,13 @@ class PacManGhostCollision implements Collision {
 
     @Override
     public void takeDecision(GamePlay gamePlay, Entity e1, Entity e2) {
-        if (e1.getType() == PacMap.ENTITIES.GHOST)
-            gamePlay.ghostCollision(e1);
-        else
-            gamePlay.ghostCollision(e2);
+        System.out.println("PowerGostCollision().takeDecision()");
+        if (e1.getType() == PacMap.ENTITIES.GHOST){
+            gamePlay.ghostCollision((Ghost) e1);
+        }
+        else{
+            gamePlay.ghostCollision((Ghost) e2);
+        }
     }
 }
 

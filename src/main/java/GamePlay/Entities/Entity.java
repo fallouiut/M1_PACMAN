@@ -3,7 +3,7 @@ package GamePlay.Entities;
 import GamePlay.Map.PacMap;
 import GamePlay.Map.Position;
 
-public abstract class Entity {
+public class Entity {
 
     protected PacMap.ENTITIES type;
     protected Position position;
@@ -19,15 +19,16 @@ public abstract class Entity {
         return type;
     }
 
+    // fonctione @Overridées par les décorateurs
     public Position getPosition() {
-        return position;
+        return this.position;
+    }
+
+    public void setPosition(Position p) {
+        this.position = p;
     }
 
     public int getSpeed() {
-        return speed;
-    }
-
-    public void setPosition(Position newOne) {
-        this.position = newOne;
+        return this.speed;
     }
 }

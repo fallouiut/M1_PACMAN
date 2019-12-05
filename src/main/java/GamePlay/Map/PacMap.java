@@ -96,12 +96,7 @@ public class PacMap {
     }
 
     public boolean find(ENTITIES entity, Position position) {
-        Entity entity1 = new Entity(entity, position) {
-            @Override
-            public ENTITIES getType() {
-                return entity;
-            }
-        };
+        Entity entity1 = new Entity(entity, position);
         return find(entity1, position);
     }
 
@@ -128,13 +123,10 @@ public class PacMap {
             case TEXT_FRUTE:
                 return ENTITIES.FRUTE;
             case TEXT_SLOW_GHOST_POWER:
-                System.out.println("TEXT_SLOW_GHOST_POWER: " + i + ", "  + j);
                 return ENTITIES.SLOW_GHOST_POWER;
             case TEXT_KILLING_POWER:
-                System.out.println("TEXT_KILLING_POWER: " + i + ", "  + j);
                 return ENTITIES.KILLING_POWER;
             case TEXT_SPEED_POWER:
-                System.out.println("TEXT_SPEED_POWER: " + i + ", "  + j);
                 return ENTITIES.SPEED_POWER;
             default:
                 return ENTITIES.EMPTY;

@@ -3,10 +3,10 @@ package GamePlay.Entities;
 import GamePlay.Map.PacMap.ENTITIES;
 import GamePlay.Map.Position;
 
-public class Fruit extends Entity 
+public class Frute extends Entity
 {
 	
-	public Fruit(Position position) 
+	public Frute(Position position)
 	{
 		super(ENTITIES.FRUTE, position);
 	}
