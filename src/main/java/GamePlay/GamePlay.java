@@ -198,6 +198,7 @@ public class GamePlay {
                 totalScore = totalScore + getPoints(e);
                 gameMotor.setScore(totalScore);
                 map.removeEntity(e);
+                gameMotor.frute();
 
                 if (frutesNumber == 0) {
                     // TODO: gameMotor.gameWon()
@@ -222,6 +223,7 @@ public class GamePlay {
     }
 
     public void powerCollision(Entity e) {
+        System.out.println("Power: " + main.toString());
         switch (e.getType()) {
             case KILLING_POWER:
                 main = new KillingPacman(main);
@@ -242,30 +244,7 @@ public class GamePlay {
         new PowerTimeThread(this, e.getType(), POWER_TIME_SEC).start();
         // TODO: qui, dans un thread lance un miniteur et a la fin appelle gamePlay.stopPower()
     }
-/*
-    public void stopPower(PacMap.ENTITIES power) {
-        System.out.println("Pouvoir " + power + " terminé");
-        // TODO: appelé du thread, elle enleve les pouvoirs
-        gameMotor.takeBonus(); // Sound
-        Thread bonusTimer = new Thread(new Runnable()
-        {
-           public void run()
-           {
-               long start = System.nanoTime();
-               double elapsedSeconds;
-               while (true)
-               {
-            	   elapsedSeconds = (System.nanoTime() - start) / 250_000_000.0;
-            	   System.out.println(elapsedSeconds);
-            	   if (elapsedSeconds > POWER_LASTING)
-            		   break;
-               }
-        	   stopPower(e.getType());       	   
-           }
-        });
-        bonusTimer.start();
-    }
-*/
+
     public void stopPower(PacMap.ENTITIES power) {
         switch (power) {
             case KILLING_POWER:
@@ -278,7 +257,7 @@ public class GamePlay {
                 freezeBackGhosts();
                 break;
         }
-        System.out.println(main.toString());
+        System.out.println("power stopped: " + main.toString());
     }
 
     public synchronized void freezeGhosts() {
@@ -371,7 +350,6 @@ public class GamePlay {
                 this.map.destroy();
                 this.map.setPath(path);
                 this.map.load();
-                this.main = new KillingPacman(main);
                 this.start();
             } else {
                 // TODO: afficher que le jeu est fini ou erreur

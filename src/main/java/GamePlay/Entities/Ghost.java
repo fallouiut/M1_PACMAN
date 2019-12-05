@@ -135,6 +135,7 @@ public class Ghost extends Entity implements Runnable {
      */
     public void startMoving() {
         while (!killed) {
+            System.out.println(Thread.currentThread().getName() + " choosing");
             choose();
             try {
                 TimeUnit.MILLISECONDS.wait(100);

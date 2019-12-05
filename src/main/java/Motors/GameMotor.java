@@ -80,6 +80,10 @@ public class GameMotor {
         Sounds.ghost();
     }
 
+    public void frute() {
+        Sounds.fruit();
+    }
+
     public void power() {
         Sounds.bonus();
     }
