@@ -137,8 +137,9 @@ public class Ghost extends Entity implements Runnable {
         while (!killed) {
             System.out.println(Thread.currentThread().getName() + " choosing");
             choose();
+            move();
             try {
-                TimeUnit.MILLISECONDS.wait(100);
+                Thread.sleep(100);
             } catch (Exception e) {
                 System.out.println("Ghost.startMoving()");
                 System.out.println(e.getMessage());
@@ -170,10 +171,13 @@ public class Ghost extends Entity implements Runnable {
 
     @Override
     public void run() {
+        System.out.println("start moving");
         try {
             startMoving();
         } catch (Exception e) {
             System.out.println("Ghost.run() startMoving()");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -195,5 +199,9 @@ public class Ghost extends Entity implements Runnable {
     @Override
     public int getSpeed() {
         return this.speed;
+    }
+
+    public void dead() {
+        this.killed = true;
     }
 }

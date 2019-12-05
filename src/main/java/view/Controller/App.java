@@ -4,6 +4,7 @@ import GamePlay.GamePlay;
 import Motors.GameMotor;
 import Motors.PhysicalMotor;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.WindowEvent;
 import view.Interface.Highscore;
 import view.Interface.Menu;
 import view.Interface.PacmanAnimation;
@@ -54,6 +55,13 @@ public class App extends Application {
         
         displayMenu();
         stage.show();
+
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                System.exit(0);
+            }
+        });
     }
 
     public BorderPane initInterface() {

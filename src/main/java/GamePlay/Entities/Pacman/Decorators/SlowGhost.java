@@ -1,6 +1,5 @@
 package GamePlay.Entities.Pacman.Decorators;
 
-import GamePlay.Entities.Entity;
 import GamePlay.Entities.Ghost;
 import GamePlay.GamePlay;
 import GamePlay.Map.Position;

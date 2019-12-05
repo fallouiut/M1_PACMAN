@@ -66,6 +66,7 @@ public class GamePlay {
         for (Ghost g : ghosts) {
             Thread t = new Thread(g);
             t.start();
+            break;
         }
     }
 
@@ -229,7 +230,7 @@ public class GamePlay {
                 main = new KillingPacman(main);
                 break;
             case SPEED_POWER:
-                main = new SpeedPacman(main, 10);
+                main = new SpeedPacman(main, -2000);
                 break;
             case SLOW_GHOST_POWER:
                 freezeGhosts();
@@ -313,6 +314,7 @@ public class GamePlay {
         // TODO: game.deleteGhost(p)
         System.out.println("Gameplay.killGhost at(): " + g.getPosition().toString());
         System.out.println("GHOST position " + g.getPosition().toString() + " to remove");
+        g.dead();
         gameMotor.removeGhost(g);
         totalScore = totalScore + getPoints(g);
         gameMotor.setScore(totalScore);
@@ -321,7 +323,7 @@ public class GamePlay {
     public void start() {
         System.out.println("start");
         gameMotor.launchParty(this.map);
-        //startEntities();
+        startEntities();
     }
 
     public void nextLevel() throws Exception {
