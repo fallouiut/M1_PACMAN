@@ -180,6 +180,8 @@ public class MapController {
 		System.out.println("------------------- ghost-------------------------");
 		ENTITIES mainAtThisPos = m_pacmap.getMainElem(toDelete.getPosition().getX(), toDelete.getPosition().getY());
 		ENTITIES toReplace = m_pacmap.find(ENTITIES.FRUTE, toDelete.getPosition()) ? ENTITIES.FRUTE: ENTITIES.EMPTY;
+		System.out.println("TOREPLACE: " + toReplace);
+		System.out.println("a la position " + toDelete.getPosition().toString());
 		this.replaceImage(toDelete, toReplace);
 	}
 

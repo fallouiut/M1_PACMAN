@@ -2,7 +2,6 @@ package Motors;
 
 import GamePlay.Entities.Entity;
 import GamePlay.Entities.Ghost;
-import GamePlay.GamePlay;
 import GamePlay.Map.PacMap;
 import GamePlay.Map.Position;
 import view.Interface.Sounds;
@@ -78,6 +77,10 @@ public class GameMotor {
     public void removeGhost(Ghost g) {
         System.out.println("GameMotor.removeGhost()");
         physicalMotor.remove(g);
-        Sounds.lifeLost();
+        Sounds.ghost();
+    }
+
+    public void power() {
+        Sounds.bonus();
     }
 }

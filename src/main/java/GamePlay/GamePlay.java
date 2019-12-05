@@ -235,6 +235,7 @@ public class GamePlay {
             default:
                 break;
         }
+        gameMotor.power();
         System.out.println(main.toString());
         map.removeEntity(e);
         // TODO: si tu peux mettre un son de pouvoir
