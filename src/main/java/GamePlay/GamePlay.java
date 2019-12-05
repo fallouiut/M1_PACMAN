@@ -11,7 +11,6 @@ import GamePlay.Entities.PowerTimeThread;
 import GamePlay.Map.PacMap;
 import GamePlay.Map.Position;
 import Motors.GameMotor;
-
 import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -20,12 +19,21 @@ import java.util.List;
 
 public class GamePlay {
 
+<<<<<<< HEAD
     private static final int FRUIT_SCORE = 100;
     private static final int GHOST_SCORE = 300;
     private static final int SUPERFRUIT_SCORE = 200;
     private static final int POWER_TIME_SEC = 10;
     private int totalScore = 0;
 
+=======
+	private static final int FRUIT_SCORE = 100;
+	private static final int GHOST_SCORE  = 300;
+	private static final int SUPERFRUIT_SCORE = 200;
+	private static final int POWER_LASTING = 5;
+	private int totalScore = 0;
+	
+>>>>>>> 2d479d53f69b8716a25ab85c3f17ec7134c9a546
     private final String MAP_PATH = "files/maps/map-test.txt";
     public final static int TIME_TO_WAIT = 1000;
 
@@ -43,7 +51,6 @@ public class GamePlay {
     private Object moveLock = new Object();
     private Object fruteLock = new Object();
     private volatile int frutesNumber = 0;
-    public static final int LIFE_NUMBER = 5;
 
     GameMotor gameMotor;
 
@@ -236,6 +243,7 @@ public class GamePlay {
             default:
                 break;
         }
+<<<<<<< HEAD
         System.out.println(main.toString());
         map.removeEntity(e);
         // TODO: si tu peux mettre un son de pouvoir
@@ -246,6 +254,29 @@ public class GamePlay {
     public void stopPower(PacMap.ENTITIES power) {
         System.out.println("Pouvoir " + power + " terminé");
         // TODO: appelé du thread, elle enleve les pouvoirs
+=======
+        gameMotor.takeBonus(); // Sound
+        Thread bonusTimer = new Thread(new Runnable()
+        {
+           public void run()
+           {
+               long start = System.nanoTime();
+               double elapsedSeconds;
+               while (true)
+               {
+            	   elapsedSeconds = (System.nanoTime() - start) / 250_000_000.0;
+            	   System.out.println(elapsedSeconds);
+            	   if (elapsedSeconds > POWER_LASTING)
+            		   break;
+               }
+        	   stopPower(e.getType());       	   
+           }
+        });
+        bonusTimer.start();
+    }
+
+    public void stopPower(PacMap.ENTITIES power) {
+>>>>>>> 2d479d53f69b8716a25ab85c3f17ec7134c9a546
         switch (power) {
             case KILLING_POWER:
                 main = main.getPacman();

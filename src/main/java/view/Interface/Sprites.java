@@ -2,6 +2,7 @@ package view.Interface;
 
 import java.io.File;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Sprites {
 	
@@ -29,7 +30,12 @@ public class Sprites {
 				  score_zero, score_one, score_two, score_three, score_four,
 				  score_five, score_six, score_seven, score_eight, score_nine,
 
-				  statebarBackground;
+				  statebarBackground, select_arrow,
+				  
+				  letter_A, letter_B, letter_C, letter_D, letter_E, letter_F, letter_G,
+				  letter_H, letter_I, letter_J, letter_K , letter_L, letter_M, letter_N,
+				  letter_O, letter_P, letter_Q, letter_R, letter_S, letter_T, letter_U,
+				  letter_V, letter_W, letter_X, letter_Y, letter_Z, letter_underscore;
 
 
 	static {
@@ -90,6 +96,36 @@ public class Sprites {
 		score_nine = createImage("score_nine.png");
 
 		statebarBackground = createImage("statebar_background.png");
+		
+		letter_A = createImage("lettre_A.png");
+		letter_B = createImage("lettre_B.png");
+		letter_C = createImage("lettre_C.png");
+		letter_D = createImage("lettre_D.png");
+		letter_E = createImage("lettre_E.png");
+		letter_F = createImage("lettre_F.png");
+		letter_G = createImage("lettre_G.png");
+		letter_H = createImage("lettre_H.png");
+		letter_I = createImage("lettre_I.png");
+		letter_J = createImage("lettre_J.png");
+		letter_K = createImage("lettre_K.png");
+		letter_L = createImage("lettre_L.png");
+		letter_M = createImage("lettre_M.png");
+		letter_N = createImage("lettre_N.png");
+		letter_O = createImage("lettre_O.png");
+		letter_P = createImage("lettre_P.png");
+	    letter_Q = createImage("lettre_Q.png");
+	    letter_R = createImage("lettre_R.png");
+	    letter_S = createImage("lettre_S.png");
+	    letter_T = createImage("lettre_T.png");
+	    letter_U = createImage("lettre_U.png");
+	    letter_V = createImage("lettre_V.png");
+	    letter_W = createImage("lettre_W.png");
+	    letter_X = createImage("lettre_X.png");
+	    letter_Y = createImage("lettre_Y.png");
+	    letter_Z = createImage("lettre_Z.png");
+	    letter_underscore = createImage("lettre_underscore.png");
+	    
+	    select_arrow = createImage("menu_select.png");
 	}
 
 	public static boolean isPacman(Image image)
@@ -179,5 +215,121 @@ public class Sprites {
 					else return Sprites.pacman_down2;
 		}
 		return null;
+	}
+
+	public static Image getLetterSprite(char c) {
+		switch (c)
+		{
+			case 'a':
+			case 'A':
+				return letter_A;
+			case 'b':
+			case 'B':
+				return letter_B;
+			case 'c':
+			case 'C':
+				return letter_C;
+			case 'd':
+			case 'D':
+				return letter_D;
+			case 'e':
+			case 'E':
+				return letter_E;
+			case 'f':
+			case 'F':
+				return letter_F;
+			case 'g':
+			case 'G':
+				return letter_G;
+			case 'h':
+			case 'H':
+				return letter_H;
+			case 'i':
+			case 'I':
+				return letter_I;
+			case 'j':
+			case 'J':
+				return letter_J;
+			case 'k':
+			case 'K':
+				return letter_K;
+			case 'l':
+			case 'L':
+				return letter_L;
+			case 'm':
+			case 'M':
+				return letter_M;
+			case 'n':
+			case 'N':
+				return letter_N;
+			case 'o':
+			case 'O':
+				return letter_O;
+			case 'p':
+			case 'P':
+				return letter_P;
+			case 'q':
+			case 'Q':
+				return letter_Q;
+			case 'r':
+			case 'R':
+				return letter_R;
+			case 's':
+			case 'S':
+				return letter_S;
+			case 't':
+			case 'T':
+				return letter_T;
+			case 'u':
+			case 'U':
+				return letter_U;
+			case 'v':
+			case 'V':
+				return letter_V;
+			case 'w':
+			case 'W':
+				return letter_W;
+			case 'x':
+			case 'X':
+				return letter_X;
+			case 'y':
+			case 'Y':
+				return letter_Y;
+			case 'z':
+			case 'Z':
+				return letter_Z;
+			case ' ':
+				return empty;
+			default :
+				return letter_underscore;
+		}
+	}
+
+	public static Image getNumSprite(int initialNumberLife) {
+		switch (initialNumberLife)
+		{
+			case 0:
+				return score_zero;
+			case 1:
+				return score_one;
+			case 2:
+				return score_two;
+			case 3:
+				return score_three;
+			case 4:
+				return score_four;
+			case 5:
+				return score_five;
+			case 6:
+				return score_six;
+			case 7:
+				return score_seven;
+			case 8:
+				return score_eight;
+			case 9:
+				return score_nine;
+			default :
+				return null;
+		}
 	}
 }
