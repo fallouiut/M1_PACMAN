@@ -19,21 +19,13 @@ import java.util.List;
 
 public class GamePlay {
 
-<<<<<<< HEAD
     private static final int FRUIT_SCORE = 100;
     private static final int GHOST_SCORE = 300;
     private static final int SUPERFRUIT_SCORE = 200;
     private static final int POWER_TIME_SEC = 10;
     private int totalScore = 0;
 
-=======
-	private static final int FRUIT_SCORE = 100;
-	private static final int GHOST_SCORE  = 300;
-	private static final int SUPERFRUIT_SCORE = 200;
-	private static final int POWER_LASTING = 5;
-	private int totalScore = 0;
-	
->>>>>>> 2d479d53f69b8716a25ab85c3f17ec7134c9a546
+
     private final String MAP_PATH = "files/maps/map-test.txt";
     public final static int TIME_TO_WAIT = 1000;
 
@@ -235,7 +227,7 @@ public class GamePlay {
                 main = new KillingPacman(main);
                 break;
             case SPEED_POWER:
-                main = new SpeedPacman(main, 7);
+                main = new SpeedPacman(main, 10);
                 break;
             case SLOW_GHOST_POWER:
                 freezeGhosts();
@@ -243,18 +235,16 @@ public class GamePlay {
             default:
                 break;
         }
-<<<<<<< HEAD
         System.out.println(main.toString());
         map.removeEntity(e);
         // TODO: si tu peux mettre un son de pouvoir
-        //new PowerTimeThread(this, e.getType(), POWER_TIME_SEC).start();
+        new PowerTimeThread(this, e.getType(), POWER_TIME_SEC).start();
         // TODO: qui, dans un thread lance un miniteur et a la fin appelle gamePlay.stopPower()
     }
-
+/*
     public void stopPower(PacMap.ENTITIES power) {
         System.out.println("Pouvoir " + power + " terminé");
         // TODO: appelé du thread, elle enleve les pouvoirs
-=======
         gameMotor.takeBonus(); // Sound
         Thread bonusTimer = new Thread(new Runnable()
         {
@@ -274,9 +264,8 @@ public class GamePlay {
         });
         bonusTimer.start();
     }
-
+*/
     public void stopPower(PacMap.ENTITIES power) {
->>>>>>> 2d479d53f69b8716a25ab85c3f17ec7134c9a546
         switch (power) {
             case KILLING_POWER:
                 main = main.getPacman();
