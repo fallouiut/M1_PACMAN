@@ -4,6 +4,7 @@ import GamePlay.Entities.Entity;
 import GamePlay.Entities.Ghost;
 import GamePlay.Map.PacMap;
 import GamePlay.Map.Position;
+import javafx.animation.TranslateTransition;
 import view.Interface.Sounds;
 
 public class GameMotor {
@@ -25,48 +26,31 @@ public class GameMotor {
         // TODO: mapController popup indiquant que le jeu est fini
         Sounds.victory();
     }
-    
-    public void eatFruit()
-    {
-    	Sounds.fruit();
+
+    public void gameOver() {
+        Sounds.gameOver();
     }
-    
-    public void death()
-    {
-    	Sounds.death();
+
+    public void loseLife() {
+        Sounds.ghost();
     }
-    
-    public void gameOver()
-    {
-    	Sounds.gameOver();
-    }
-    
-    public void loseLife()
-    {
-    	Sounds.ghost();
-    }
-    
-    public void takeBonus()
-    {
-    	Sounds.bonus();
-    }  
 
     public void makeMove(Entity entity, Position end) {
-        graphicalMotor.translation(entity, end);
+        PhysicalCalculsMoteur.Pair p = PhysicalCalculsMoteur.getDiffXY(entity.getPosition(), end);
+        TranslateTransition translateTransition = PhysicalCalculsMoteur.getTranslateTransition(p.getX(), p.getY(), entity, graphicalMotor.getMap());
+        PhysicalCalculsMoteur.Pair currentPixelPosition = PhysicalCalculsMoteur.computePixelPosition(entity.getPosition());
+
+        graphicalMotor.translation(entity, end, translateTransition, currentPixelPosition);
     }
-	
+
     // TODO : Il faut appeller cette fonction quand le score est modifié
     public void setScore(int score) {
         graphicalMotor.setScore(score);
     }
+
     // TODO : Il faut appeller cette fonction quand le nombre de vie est modifié
     public void setLife(int life) {
         graphicalMotor.setLife(life);
-    }
-
-    public void deleteFrute(Entity e, PacMap.ENTITIES sub) {
-        //physicalMotor.remove(e, sub);
-        Sounds.fruit();
     }
 
     public void removePacman(Entity e, PacMap.ENTITIES sub) {
@@ -76,7 +60,8 @@ public class GameMotor {
 
     public void removeGhost(Ghost g) {
         System.out.println("GameMotor.removeGhost()");
-        graphicalMotor.removeGhost(g);
+        PhysicalCalculsMoteur.Pair currentPixelPosition = PhysicalCalculsMoteur.computePixelPosition(g.getPosition());
+        graphicalMotor.removeGhost(g, currentPixelPosition);
         Sounds.ghost();
     }
 

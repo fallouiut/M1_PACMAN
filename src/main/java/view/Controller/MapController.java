@@ -12,7 +12,6 @@ import view.Interface.Map;
 import view.Interface.Sprites;
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.ImageView;
-import javafx.util.Duration;
 
 public class MapController {
 
@@ -23,27 +22,17 @@ public class MapController {
 	ArrayList <ImageView> m_ghosts = new ArrayList <ImageView> ();
 	private Map m_map = new Map();
 	private PacMap m_pacmap;
-	private Object lock = new Object();
 
 	private ArrayList <Entity> entities = new ArrayList <Entity> ();
-	
-	public void refresh(PacMap pacmap, int speed)
-	{
-		m_map.refresh();
-		entities.clear();
-		initializeMap(pacmap);
-	}
 
 	public boolean moveEntity(Entity e, Position end, TranslateTransition translateTransition, PhysicalCalculsMoteur.Pair currentPixelPositions)
 	{
-
 		translateTransition.setAutoReverse(false);
 		translateTransition.play();
 		// on enleve l'entité de sa position de départ
 		m_pacmap.removeEntity(e);
 		// on move à sa nouvelle position
 		m_pacmap.moveEntity(e, end);
-
 
 		Entity copy = new Entity(e.getType(), e.getPosition());// position de départ
 		e.setPosition(end);
@@ -124,17 +113,19 @@ public class MapController {
 	public void deleteEntity(Entity toDelete, PhysicalCalculsMoteur.Pair currentPixelPosition) {
 		// le supprimer definitivement de l'image LOL avant de la remplacer
 		m_pacmap.removeEntity(toDelete);
-		System.out.println("------------------- ghost-------------------------");
-		ENTITIES mainAtThisPos = m_pacmap.getMainElem(toDelete.getPosition().getX(), toDelete.getPosition().getY());
+
+		//ENTITIES mainAtThisPos = m_pacmap.getMainElem(toDelete.getPosition().getX(), toDelete.getPosition().getY());
 		ENTITIES toReplace = m_pacmap.find(ENTITIES.FRUTE, toDelete.getPosition()) ? ENTITIES.FRUTE: ENTITIES.EMPTY;
-		System.out.println("TOREPLACE: " + toReplace);
-		System.out.println("a la position " + toDelete.getPosition().toString());
+
 		this.replaceImage(currentPixelPosition, toReplace);
 	}
 
-	public void removeGhost(Entity e) {
+	public void removeGhost(Entity e, PhysicalCalculsMoteur.Pair currentPixelPos) {
 		Ghost g = (Ghost)e;
-		m_map.getChildren().remove(m_ghosts.get(g.getNumGhost()));
+
+		//m_map.getChildren().remove(m_ghosts.get(g.getNumGhost()));
+		//deleteEntity(g, currentPixelPos);
+		m_ghosts.remove(g.getNumGhost());
 		m_pacmap.removeEntity(e);
 	}
 

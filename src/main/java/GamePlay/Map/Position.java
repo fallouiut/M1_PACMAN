@@ -1,4 +1,5 @@
 package GamePlay.Map;
+
 public class Position {
 
     private int x;

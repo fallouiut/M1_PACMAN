@@ -6,9 +6,10 @@ import GamePlay.Map.Position;
 
 public class SimplePacman extends AbstractPacman 
 {
-    public SimplePacman(Position position)
+    public SimplePacman(Position position, int pacmanSpeed)
     {
         super(position);
+        this.speed = pacmanSpeed;
     }
     
     @Override

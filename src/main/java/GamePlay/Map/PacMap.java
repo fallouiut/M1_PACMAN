@@ -17,7 +17,6 @@ public class PacMap {
     public final static String TEXT_SPEED_POWER = "1";
     public final static String TEXT_SLOW_GHOST_POWER = "2";
     public final static String TEXT_KILLING_POWER = "3";
-    public final static String TEXT_EMPTY = " ";
 
     private Cell[][] labyrinth;
     private String file;
@@ -139,20 +138,19 @@ public class PacMap {
     public static Position getNewPositionByOrientation(Position p, String orientation) {
         switch (orientation) {
             case "LEFT":
-                return new Position(p.getX(), p.getY()-1);
+                return new Position(p.getX(), p.getY() - 1);
             case "UP":
-                return new Position(p.getX()-1, p.getY());
+                return new Position(p.getX() - 1, p.getY());
             case "DOWN":
-                return new Position(p.getX()+1, p.getY());
+                return new Position(p.getX() + 1, p.getY());
             case "RIGHT":
-                return new Position(p.getX(), p.getY()+1);
+                return new Position(p.getX(), p.getY() + 1);
             default:
                 return p;
         }
     }
 
-	public ENTITIES getMainElem(int x, int y) 
-	{
-		return labyrinth[x][y].getMainElem();
-	}
+    public ENTITIES getMainElem(int x, int y) {
+        return labyrinth[x][y].getMainElem();
+    }
 }

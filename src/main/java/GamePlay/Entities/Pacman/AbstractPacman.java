@@ -1,7 +1,6 @@
 package GamePlay.Entities.Pacman;
 
 import GamePlay.Entities.Entity;
-import GamePlay.GamePlay;
 import GamePlay.Map.PacMap;
 import GamePlay.Map.Position;
 

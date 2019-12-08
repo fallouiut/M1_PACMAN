@@ -64,8 +64,4 @@ public class Map extends Pane {
         getChildren().add(pacman);
 
     }
-
-    public void refresh() {
-        this.getChildren().clear();
-    }
 }

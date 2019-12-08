@@ -18,12 +18,16 @@ import java.util.List;
 
 public class GamePlay {
 
+    // donnees de score
     private static final int FRUIT_SCORE = 100;
     private static final int GHOST_SCORE = 300;
     private static final int SUPERFRUIT_SCORE = 200;
     private int totalScore = 0;
 
+    // joueur principal
     private AbstractPacman main;
+
+    // map d'état
     private PacMap map;
 
     // pour lancer le jeu dès que la map est prête
@@ -107,7 +111,7 @@ public class GamePlay {
         try {
             switch (entity) {
                 case PACMAN:
-                    this.main = new SimplePacman(position);
+                    this.main = new SimplePacman(position, currentLevel.getPacmanSpeed());
                     break;
                 case GHOST:
                     this.ghosts.add(new Ghost(nGhost, position, currentLevel.getGhostSpeed(), this));
@@ -135,7 +139,7 @@ public class GamePlay {
             isBloc = this.map.getLabyrinth()[position.getX()][position.getY()].find(PacMap.ENTITIES.BLOC);
             return isBloc;
         } else {
-            throw new ArrayIndexOutOfBoundsException("Engine.isBloc()");
+            throw new ArrayIndexOutOfBoundsException("GamePlay.isBloc()");
         }
     }
 

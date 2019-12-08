@@ -16,6 +16,9 @@ public class GraphicalMotor {
     private PacmanAnimation pacmanAnimation;
     private BorderPane pane;
 
+    /*
+        Moteur graphique qui gère la bonne liaison entre son/map/animation/score_life
+     */
     public GraphicalMotor(MapController mapController, StateBar stateBar, PacmanAnimation pacmanAnimation, BorderPane borderPane) throws Exception {
         this.window = mapController;
         this.stateBar = stateBar;
@@ -23,13 +26,8 @@ public class GraphicalMotor {
         this.pane = borderPane;
     }
 
-    public void translation(Entity entity, Position end) {
-        PhysicalCalculsMoteur.Pair p = PhysicalCalculsMoteur.getDiffXY(entity.getPosition(), end);
-        TranslateTransition translateTransition = PhysicalCalculsMoteur.getTranslateTransition(p.getX(), p.getY(), entity, window);
-        PhysicalCalculsMoteur.Pair currentPixelPosition = PhysicalCalculsMoteur.computePixelPosition(entity.getPosition());
-
+    public void translation(Entity entity, Position end, TranslateTransition translateTransition, PhysicalCalculsMoteur.Pair currentPixelPosition) {
         window.moveEntity(entity, end, translateTransition, currentPixelPosition);
-
     }
 
     public boolean loadMap(PacMap stateMap) {
@@ -53,16 +51,13 @@ public class GraphicalMotor {
         stateBar.setLife(life);
     }
 
-    public void remove(Entity entity) {
-        //System.out.println("physicalMotor.remove()");
-        PhysicalCalculsMoteur.Pair currentPixelPosition = PhysicalCalculsMoteur.computePixelPosition(entity.getPosition());
-        window.deleteEntity(entity, currentPixelPosition);
-        //window.getMap().replaceImage(e.getPosition().getX(), e.getPosition().getY(), ENTITIES.EMPTY);
+
+    public void removeGhost(Entity g, PhysicalCalculsMoteur.Pair currentPixelPosition) {
+        System.out.println("physicalMotor.removeGhost()");
+        window.removeGhost(g, currentPixelPosition);
     }
 
-    public void removeGhost(Entity g) {
-        System.out.println("physicalMotor.removeGhost()");
-        window.removeGhost(g);
-        //window.getMap().replaceImage(e.getPosition().getX(), e.getPosition().getY(), ENTITIES.EMPTY);
+    public MapController getMap() {
+        return window;
     }
 }

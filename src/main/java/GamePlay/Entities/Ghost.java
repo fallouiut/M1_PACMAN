@@ -5,6 +5,10 @@ import GamePlay.Map.PacMap;
 import GamePlay.Map.Position;
 import javafx.application.Platform;
 
+/*
+    Class ghost, executee en thread
+    IA: Distance Shanon
+ */
 public class Ghost extends Entity implements Runnable {
 
     private Position lastPosition = null;
@@ -19,7 +23,7 @@ public class Ghost extends Entity implements Runnable {
     private boolean[] moves = new boolean[4];
     private int[] distances = new int[4];
     private Position[] positions = new Position[4];
-    private String[] directions = {"Haut", "Bas", "Gauche", "Droite"};
+    private String[] directions = {"Haut", "Bas", "Gauche", "Droite"}; // a des fins de tests
     private GamePlay gamePlay;
     
     private int nGhost;
@@ -122,14 +126,6 @@ public class Ghost extends Entity implements Runnable {
         }
     }
 
-    public Position getNextPosition() {
-        return nextPosition;
-    }
-
-    public Position getLastPosition() {
-        return lastPosition;
-    }
-
     /*
         on boucle et on choisit un mouvement
      */
@@ -187,11 +183,6 @@ public class Ghost extends Entity implements Runnable {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
-    }
-
-
-    public Ghost getGhost() {
-        return this;
     }
 
     @Override
