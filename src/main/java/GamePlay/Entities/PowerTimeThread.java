@@ -15,7 +15,6 @@ public class PowerTimeThread extends Thread {
         this.timeSec = time;
         this.gamePlay = gamePlay;
         this.power = power;
-        System.out.println("thread crée");
     }
 
     public void run() {
@@ -23,8 +22,6 @@ public class PowerTimeThread extends Thread {
             TimeUnit.SECONDS.sleep(timeSec);
             this.gamePlay.stopPower(power);
         } catch (Exception e) {
-            System.out.println("PowerTimeThread.run(): failed");
-            System.out.println(e.getMessage());
             e.printStackTrace();
             this.gamePlay.stopPower(this.power);
         }

@@ -16,12 +16,12 @@ public class GameMotor {
         this.sounds = sounds;
     }
 
-    public void launchParty(PacMap stateMap) {
+    public boolean launchParty(PacMap stateMap) {
         //System.out.println("launchParty");
-        physicalMotor.loadMap(stateMap);
+        return physicalMotor.loadMap(stateMap);
     }
 
-    public void gameIsReached() {
+    public void victory() {
         // TODO: mapController popup indiquant que le jeu est fini
         Sounds.victory();
     }
@@ -74,9 +74,12 @@ public class GameMotor {
         Sounds.death();
     }
 
+    /*
+        non fonctionnel
+     */
     public void removeGhost(Ghost g) {
         System.out.println("GameMotor.removeGhost()");
-        physicalMotor.remove(g);
+        physicalMotor.removeGhost(g);
         Sounds.ghost();
     }
 
@@ -85,6 +88,6 @@ public class GameMotor {
     }
 
     public void power() {
-        Sounds.bonus();
+        Sounds.power();
     }
 }

@@ -50,6 +50,7 @@ public class Map extends Pane {
         imageView.setFitHeight(MapController.CONFIG_X);
         imageView.setFitWidth(MapController.CONFIG_Y);
         imageView.setPreserveRatio(true);
+
         getChildren().add(imageView);
     }
 

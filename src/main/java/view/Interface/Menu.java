@@ -119,7 +119,7 @@ public class Menu
 	    }
 	}
 
-	private void validateMenuChoice(String currentPos) 
+	private void validateMenuChoice(String currentPos)
 	{	
 		switch (currentPos)
 		{

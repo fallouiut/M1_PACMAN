@@ -36,7 +36,7 @@ public class Highscore {
 		}
 	}
 	
-	private void buildHighscores() 
+	private void buildHighscores()
 	{
 		highscores = new ArrayList <ArrayList <ImageView>> ();
 		int i = 0;

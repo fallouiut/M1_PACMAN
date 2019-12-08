@@ -35,24 +35,20 @@ public class App extends Application {
     
     private Stage stage;
 
+
     public void start(Stage stage) throws Exception {
+        // chercher les imges
+        new Sprites();
+
     	this.stage = stage;
         this.pane = initInterface();
-        physicalMotor = new PhysicalMotor(map, m_stateBar);
+        physicalMotor = new PhysicalMotor(map, m_stateBar, m_pacmanAnim, pane);
         sounds = new Sounds();
         gameMotor = new GameMotor(physicalMotor, sounds);
         gamePlay = new GamePlay();
         gamePlay.setGameMotor(gameMotor);
         stage.setTitle("Pacman");
-        try {
-            // lance le jeu
-            gamePlay.nextLevel();
-        } catch (Exception e) {
-            System.out.println("ApplicationController.start()");
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-        
+
         displayMenu();
         stage.show();
 
@@ -71,7 +67,6 @@ public class App extends Application {
         BorderPane pane = new BorderPane();
         pane.setCenter(map.getMap());
         pane.setBottom(m_stateBar.getBar());
-        m_pacmanAnim = new PacmanAnimation(map);
         return pane;
     }
 
@@ -95,7 +90,9 @@ public class App extends Application {
                 		case "QUIT" :
                 			System.exit(0);
                 		case "PLAY" :
+                            gamePlay.nextLevel();
                 			launchGame();
+                            gamePlay.allowMoves();
                 			break;
                 		case "HIGHSCORE":
                 			displayHighscore();
@@ -123,6 +120,8 @@ public class App extends Application {
                 String key = "";
                 if (ke.getCode() == KeyCode.LEFT)
                     key = "LEFT";
+                if (ke.getCode() == KeyCode.ENTER)
+                    gamePlay.alterMoves();
                 else if (ke.getCode() == KeyCode.RIGHT)
                     key = "RIGHT";
                 else if (ke.getCode() == KeyCode.DOWN)
@@ -135,7 +134,6 @@ public class App extends Application {
                 gamePlay.pacmanMove(key);
             }
         });
-        m_pacmanAnim.start();
         stage.setScene(root);
     }
 

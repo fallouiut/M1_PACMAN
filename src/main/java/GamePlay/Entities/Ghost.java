@@ -3,13 +3,15 @@ package GamePlay.Entities;
 import GamePlay.GamePlay;
 import GamePlay.Map.PacMap;
 import GamePlay.Map.Position;
-
-import java.util.concurrent.TimeUnit;
+import javafx.application.Platform;
 
 public class Ghost extends Entity implements Runnable {
 
     private Position lastPosition = null;
     private Position nextPosition;
+
+    private int time_to_wait_MILLIS;
+    private int speed_MINUS;
 
     private boolean killed = false;
 
@@ -22,16 +24,14 @@ public class Ghost extends Entity implements Runnable {
     
     private int nGhost;
 
-    public Ghost(int numGhost, Position position, GamePlay gamePlay) {
+    public Ghost(int nGhost, Position position, int time_to_wait_MILLIS, GamePlay gamePlay) {
         super(PacMap.ENTITIES.GHOST, position);
-        this.nGhost = numGhost;
+        this.nGhost = nGhost;
         this.position = position;
         this.gamePlay = gamePlay;
-        System.out.println("Thread: " + Thread.currentThread().getName());
+        this.time_to_wait_MILLIS = time_to_wait_MILLIS;
     }
 
-    public void finish() {
-    }
 
     public void initMovesData() {
         // on mets tous les moves a false
@@ -134,18 +134,19 @@ public class Ghost extends Entity implements Runnable {
         on boucle et on choisit un mouvement
      */
     public void startMoving() {
-        while (!killed) {
-            System.out.println(Thread.currentThread().getName() + " choosing");
+        while (true) {
             choose();
             move();
             try {
-                Thread.sleep(100);
+                Thread.sleep(time_to_wait_MILLIS);
+                if(killed) break;
             } catch (Exception e) {
                 System.out.println("Ghost.startMoving()");
                 System.out.println(e.getMessage());
                 e.printStackTrace();
             }
         }
+        System.out.println("stop moving");
     }
 
     public void move() {
@@ -153,26 +154,33 @@ public class Ghost extends Entity implements Runnable {
             // gamePlay.doMove() comme d'hab
             // le truc est déjà fait faudra juste checker la compatibilité avec moveEntity s'il y a des erreurs
             Position maybeLast = new Position(this.position.getX(), this.position.getY());
-            if (this.gamePlay.doMove(this, nextPosition)) {
-                this.lastPosition = maybeLast;
+
+            Ghost thisG = this;
+            // eviter les IllegalStateException
+            if(gamePlay != null) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (gamePlay.doMove(thisG, nextPosition)) {
+                            lastPosition = maybeLast;
+                        } else {
+                            System.out.println("Holding");
+                        }
+                    }
+                });
             } else {
-                System.out.println("Holding");
+                System.out.println("gamePlay == null, ghost out of game");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
-    
-    public int getNumGhost()
-    {
-    	return nGhost;
-    }
 
     @Override
     public void run() {
-        System.out.println("start moving");
         try {
+            System.out.println(Thread.currentThread().getName() + " starting");
             startMoving();
         } catch (Exception e) {
             System.out.println("Ghost.run() startMoving()");
@@ -198,10 +206,25 @@ public class Ghost extends Entity implements Runnable {
 
     @Override
     public int getSpeed() {
-        return this.speed;
+        return 10;
     }
 
     public void dead() {
         this.killed = true;
+        System.out.println("killed");
+    }
+
+    public void resetSpeed() {
+        this.time_to_wait_MILLIS -= this.speed_MINUS;
+    }
+
+    public void decreaseSpeed(int minus) {
+        this.speed_MINUS = minus;
+        this.time_to_wait_MILLIS += this.speed_MINUS;
+    }
+
+
+    public int getNumGhost() {
+        return nGhost;
     }
 }

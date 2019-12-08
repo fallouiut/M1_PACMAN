@@ -8,6 +8,8 @@ import java.io.FileReader;
 
 public class PacMap {
 
+    private static final String MAP_PATH = "files/maps/";
+
     public final static String TEXT_BLOC = "#";
     public final static String TEXT_PACMAN = "@";
     public final static String TEXT_GHOST = "&";
@@ -56,8 +58,9 @@ public class PacMap {
     public void load() throws Exception {
         if (file.isEmpty()) throw new Exception("PacMap.load() File is empty");
 
+        System.out.println("MAP_PATH + this.file: '" + MAP_PATH + this.file + "'");
         try {
-            BufferedReader bfr = new BufferedReader(new FileReader(this.file));
+            BufferedReader bfr = new BufferedReader(new FileReader(MAP_PATH + this.file));
 
             String buffer;
             int lineSize = 0;
@@ -73,7 +76,7 @@ public class PacMap {
 
             bfr.close();
             this.labyrinth = new Cell[lineSize][colSize];
-            bfr = new BufferedReader(new FileReader(this.file));
+            bfr = new BufferedReader(new FileReader(MAP_PATH + this.file));
 
             // remplir map
             int i = 0;

@@ -15,7 +15,8 @@ public class Sounds {
     private final static String VICTORY_PATH = "files/music/victory.mp3";
     private final static String LIFE_LOST_PATH = "files/music/life_lost.mp3";
     private final static String GHOST_PATH = "files/music/ghost.mp3";
-    private static MediaPlayer theme, death, fruit, victory, lifeLost, ghost, bonus, gameOver;
+    private final static String POWER_PATH = "files/music/pacman_power.mp3";
+    private static MediaPlayer theme, death, fruit, victory, lifeLost, ghost, bonus, gameOver, power;
 
     public Sounds() {
         theme = createMediaPlayer(MUSIC_PATH);
@@ -28,6 +29,12 @@ public class Sounds {
         victory = createMediaPlayer(VICTORY_PATH);
         lifeLost = createMediaPlayer(LIFE_LOST_PATH);
         ghost = createMediaPlayer(GHOST_PATH);
+        power = createMediaPlayer(POWER_PATH);
+    }
+
+    public static void power() {
+        power.stop();
+        power.play();
     }
 
     public static void restartTheme() {

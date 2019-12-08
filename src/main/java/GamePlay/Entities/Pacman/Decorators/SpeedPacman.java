@@ -2,7 +2,6 @@ package GamePlay.Entities.Pacman.Decorators;
 
 import GamePlay.Entities.Entity;
 import GamePlay.Entities.Pacman.AbstractPacman;
-import GamePlay.GamePlay;
 import GamePlay.Map.Position;
 
 public class SpeedPacman extends AbstractPacman {
@@ -26,7 +25,6 @@ public class SpeedPacman extends AbstractPacman {
         return decorated;
     }
 
-
 	@Override
 	public Position getPosition() {
 		return decorated.getPosition();
@@ -39,7 +37,5 @@ public class SpeedPacman extends AbstractPacman {
     @Override
     public int getSpeed() {
         return this.decorated.getSpeed() + this.speedAdded;
-
     }
-
 }

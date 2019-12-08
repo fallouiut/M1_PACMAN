@@ -106,7 +106,7 @@ public class MapController {
 		return true;
 	}
 	
-	private void replaceImage(Entity e, ENTITIES replaceByThisEntity) 
+	private void replaceImage(Entity e, ENTITIES replaceByThisEntity)
 	{
 		int x = e.getPosition().getX();
 		int y = e.getPosition().getY();
@@ -124,9 +124,8 @@ public class MapController {
 		return m_map;
 	}
 	
-	public void initializeMap(PacMap pacmap)
+	public boolean initializeMap(PacMap pacmap)
 	{
-		System.out.println("initMap");
 		m_pacmap = pacmap;
 		Cell[][] cells = m_pacmap.getLabyrinth();
 		Cell currentCell;
@@ -172,6 +171,8 @@ public class MapController {
 				}
 			}
 		}
+		System.out.println("map initialisée");
+		return true;
 	}
 
 	public void deleteEntity(Entity toDelete) {
@@ -183,6 +184,12 @@ public class MapController {
 		System.out.println("TOREPLACE: " + toReplace);
 		System.out.println("a la position " + toDelete.getPosition().toString());
 		this.replaceImage(toDelete, toReplace);
+	}
+
+	public void removeGhost(Entity e) {
+		Ghost g = (Ghost)e;
+		m_map.getChildren().remove(m_ghosts.get(g.getNumGhost()));
+		m_pacmap.removeEntity(e);
 	}
 
 	public ArrayList <Entity> getEntities()
