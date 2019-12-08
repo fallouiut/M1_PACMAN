@@ -82,6 +82,14 @@ public class GamePlay {
         canMove = false;
         totalScore = 0;
         lifeLeft = 0;
+
+        if (main != null) {
+            stopPower(PacMap.ENTITIES.KILLING_POWER);
+            stopPower(PacMap.ENTITIES.SPEED_POWER);
+        }
+        if (ghosts.size() > 0) {
+            stopPower(PacMap.ENTITIES.SLOW_GHOST_POWER);
+        }
     }
 
     public void startEntities() {
@@ -143,7 +151,6 @@ public class GamePlay {
             if (found) {
                 if (!isBloc(end)) {
                     // moteur de jeu
-                    System.out.println("Can move: " + canMove);
                     if (this.canMove) {
                         PacMap.ENTITIES mainAtNewPos = map.getLabyrinth()[end.getX()][end.getY()].getMainElem();
                         gameMotor.makeMove(entity, end);
@@ -154,7 +161,6 @@ public class GamePlay {
                         // on récupere l'entité principale à la position end
                         // verifie s'il y a collision entre les deux
                         Entity entityAtEndPos = this.getEntityByPos(end, mainAtNewPos);
-                        System.out.println("Entity at pos: " + entityAtEndPos.getType());
                         handleCollision(entity, entityAtEndPos);
                     } else {
                         System.out.println("\u001B[33m Mouvement bloqué de " + entity.getType() + "\u001B[0m");
@@ -215,10 +221,6 @@ public class GamePlay {
                 System.out.println("Frutes: " + frutesNumber);
                 if (frutesNumber == 0) {
                     this.gameWon();
-                    // TODO: tjis.gameWon()
-                    // TODO: this.nextLvl()
-                    System.out.println("GAGNARE");
-                    JOptionPane.showConfirmDialog(null, "Vous avez gagné");
                 }
             }
         }
@@ -269,6 +271,7 @@ public class GamePlay {
                 freezeBackGhosts();
                 break;
         }
+        gameMotor.powerEnd();
         System.out.println("power stopped: " + main.toString());
     }
 
@@ -288,14 +291,8 @@ public class GamePlay {
     public void killPacman() {
         map.removeEntity(main);
         gameMotor.removePacman(main, map.getMainElem(main.getPosition().getX(), main.getPosition().getY()));
-        JOptionPane.showConfirmDialog(null, "Perdu");
         this.gameLost();
-        // fais ces deux la stp dans un premier temps
-        // TODO: gameMotor.deletePacman(p)
-        // TODO: gameMotor.gameLost()
-
-        // TODO: main.stop()
-        // TODO: gameMotor.restart(this.lvl)
+        gameMotor.gameOver();
     }
 
     public void hurtPacman() {
@@ -310,26 +307,20 @@ public class GamePlay {
     public void killGhost(Ghost g) {
         // TODO: ghosts.getByPosition(p).stop
         // TODO: game.deleteGhost(p)
-        System.out.println("Gameplay.killGhost at(): " + g.getPosition().toString());
-        System.out.println("GHOST position " + g.getPosition().toString() + " to remove");
         g.dead();
         gameMotor.removeGhost(g);
         totalScore = totalScore + getPoints(g);
         gameMotor.setScore(totalScore);
     }
 
-    public void killGhosts() {
-        System.out.println("kill ghosts");
-        for (Ghost g : ghosts)
-            g.dead();
-    }
-
     public void go() {
         if (gameMotor.launchParty(this.map)) {
             try {
                 stopMoves();
+                System.out.println("Nombre de vies: " + lifeLeft);
                 startEntities();
                 gameMotor.setLife(lifeLeft);
+                gameMotor.setScore(0);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -355,6 +346,7 @@ public class GamePlay {
 
     public void nextLevel() {
         reinitData();
+
         currentLevelNumber += 1;
         System.out.println("--------- PASSAGE AU NIVEAU " + currentLevelNumber + "---------------");
         currentLevel = new Level(currentLevelNumber);
@@ -391,10 +383,6 @@ public class GamePlay {
             default:
                 return 0;
         }
-    }
-
-    public Level getLevel() {
-        return currentLevel;
     }
 
     public PacMap getMap() {

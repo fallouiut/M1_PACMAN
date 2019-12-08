@@ -1,45 +1,38 @@
 package Motors;
 
 import GamePlay.Entities.Entity;
-import GamePlay.Entities.Ghost;
 import GamePlay.Map.PacMap;
-import GamePlay.Map.PacMap.ENTITIES;
 import GamePlay.Map.Position;
+import javafx.animation.TranslateTransition;
 import javafx.scene.layout.BorderPane;
 import view.Controller.MapController;
 import view.Interface.PacmanAnimation;
 import view.Interface.StateBar;
 
-public class PhysicalMotor {
+public class GraphicalMotor {
 
     private MapController window;
     private StateBar stateBar;
     private PacmanAnimation pacmanAnimation;
     private BorderPane pane;
 
-    public PhysicalMotor(MapController mapController, StateBar stateBar, PacmanAnimation pacmanAnimation, BorderPane borderPane) throws Exception
-    {
+    public GraphicalMotor(MapController mapController, StateBar stateBar, PacmanAnimation pacmanAnimation, BorderPane borderPane) throws Exception {
         this.window = mapController;
         this.stateBar = stateBar;
         this.pacmanAnimation = pacmanAnimation;
         this.pane = borderPane;
     }
-    
+
     public void translation(Entity entity, Position end) {
-		int xStart, xEnd, yStart, yEnd, difX, difY;
-		xStart = entity.getPosition().getX();
-		xEnd = end.getX();
-		yStart = entity.getPosition().getY();
-		yEnd = end.getY();
-		difX = xEnd - xStart;
-		difY = yEnd - yStart;
-		if (difX != 0 && difY != 0)
-			System.err.println("Error in MapController.movePacman()");
-        window.moveEntity(entity, end, difX, difY, entity.getSpeed());
+        PhysicalCalculsMoteur.Pair p = PhysicalCalculsMoteur.getDiffXY(entity.getPosition(), end);
+        TranslateTransition translateTransition = PhysicalCalculsMoteur.getTranslateTransition(p.getX(), p.getY(), entity, window);
+        PhysicalCalculsMoteur.Pair currentPixelPosition = PhysicalCalculsMoteur.computePixelPosition(entity.getPosition());
+
+        window.moveEntity(entity, end, translateTransition, currentPixelPosition);
+
     }
 
-    public boolean loadMap(PacMap stateMap)
-    {
+    public boolean loadMap(PacMap stateMap) {
         window = new MapController();
         boolean isDone = window.initializeMap(stateMap);
 
@@ -49,24 +42,21 @@ public class PhysicalMotor {
         pacmanAnimation = new PacmanAnimation(window);
         pacmanAnimation.start();
 
-
-    	return isDone;
-    	//this.pacmanAnimation.start();
+        return isDone;
     }
 
-    public void setScore(int score)
-    {
-    	stateBar.setScore(score);
+    public void setScore(int score) {
+        stateBar.setScore(score);
     }
 
-    public void setLife(int life)
-    {
-    	stateBar.setLife(life);
+    public void setLife(int life) {
+        stateBar.setLife(life);
     }
 
-    public void remove(Entity e) {
+    public void remove(Entity entity) {
         //System.out.println("physicalMotor.remove()");
-        window.deleteEntity(e);
+        PhysicalCalculsMoteur.Pair currentPixelPosition = PhysicalCalculsMoteur.computePixelPosition(entity.getPosition());
+        window.deleteEntity(entity, currentPixelPosition);
         //window.getMap().replaceImage(e.getPosition().getX(), e.getPosition().getY(), ENTITIES.EMPTY);
     }
 

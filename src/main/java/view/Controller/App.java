@@ -2,7 +2,7 @@ package view.Controller;
 
 import GamePlay.GamePlay;
 import Motors.GameMotor;
-import Motors.PhysicalMotor;
+import Motors.GraphicalMotor;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.WindowEvent;
 import view.Interface.Highscore;
@@ -30,7 +30,7 @@ public class App extends Application {
     /* OBJETS DU JEU */
     private GamePlay gamePlay;
     private GameMotor gameMotor;
-    private PhysicalMotor physicalMotor;
+    private GraphicalMotor graphicalMotor;
     private Sounds sounds;
     
     private Stage stage;
@@ -42,9 +42,10 @@ public class App extends Application {
 
     	this.stage = stage;
         this.pane = initInterface();
-        physicalMotor = new PhysicalMotor(map, m_stateBar, m_pacmanAnim, pane);
+        graphicalMotor = new GraphicalMotor(map, m_stateBar, m_pacmanAnim, pane);
         sounds = new Sounds();
-        gameMotor = new GameMotor(physicalMotor, sounds);
+        gameMotor = new GameMotor(graphicalMotor, sounds);
+        gameMotor = new GameMotor(graphicalMotor, sounds);
         gamePlay = new GamePlay();
         gamePlay.setGameMotor(gameMotor);
         stage.setTitle("Pacman");
@@ -92,7 +93,7 @@ public class App extends Application {
                 		case "PLAY" :
                             gamePlay.nextLevel();
                 			launchGame();
-                            gamePlay.allowMoves();
+                            gamePlay.stopMoves();
                 			break;
                 		case "HIGHSCORE":
                 			displayHighscore();

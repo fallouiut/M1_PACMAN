@@ -2,5 +2,5 @@ pacmanPowerSpeed;20
 ghostSpeed;750
 pacmanSpeed;20
 pacmanLives;3
-timeForPower;7500
-ghostReductionPower;100
+timeForPower;20
+ghostReductionPower;800

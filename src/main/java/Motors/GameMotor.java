@@ -9,16 +9,16 @@ import view.Interface.Sounds;
 public class GameMotor {
 
     private final Sounds sounds;
-    private PhysicalMotor physicalMotor;
+    private GraphicalMotor graphicalMotor;
 
-    public GameMotor(PhysicalMotor physicalMotor, Sounds sounds) {
-        this.physicalMotor = physicalMotor;
+    public GameMotor(GraphicalMotor physicalMotor, Sounds sounds) {
+        this.graphicalMotor = physicalMotor;
         this.sounds = sounds;
     }
 
     public boolean launchParty(PacMap stateMap) {
         //System.out.println("launchParty");
-        return physicalMotor.loadMap(stateMap);
+        return graphicalMotor.loadMap(stateMap);
     }
 
     public void victory() {
@@ -43,7 +43,7 @@ public class GameMotor {
     
     public void loseLife()
     {
-    	Sounds.lifeLost();
+    	Sounds.ghost();
     }
     
     public void takeBonus()
@@ -52,16 +52,16 @@ public class GameMotor {
     }  
 
     public void makeMove(Entity entity, Position end) {
-        physicalMotor.translation(entity, end);
+        graphicalMotor.translation(entity, end);
     }
 	
     // TODO : Il faut appeller cette fonction quand le score est modifié
     public void setScore(int score) {
-        physicalMotor.setScore(score);
+        graphicalMotor.setScore(score);
     }
     // TODO : Il faut appeller cette fonction quand le nombre de vie est modifié
     public void setLife(int life) {
-    	physicalMotor.setLife(life);
+        graphicalMotor.setLife(life);
     }
 
     public void deleteFrute(Entity e, PacMap.ENTITIES sub) {
@@ -74,12 +74,9 @@ public class GameMotor {
         Sounds.death();
     }
 
-    /*
-        non fonctionnel
-     */
     public void removeGhost(Ghost g) {
         System.out.println("GameMotor.removeGhost()");
-        physicalMotor.removeGhost(g);
+        graphicalMotor.removeGhost(g);
         Sounds.ghost();
     }
 
@@ -89,5 +86,10 @@ public class GameMotor {
 
     public void power() {
         Sounds.power();
+    }
+
+    public void powerEnd() {
+        Sounds.ghost();
+        Sounds.bonus();
     }
 }

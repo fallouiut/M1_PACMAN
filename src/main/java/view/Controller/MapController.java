@@ -7,6 +7,7 @@ import GamePlay.Map.Cell;
 import GamePlay.Map.PacMap;
 import GamePlay.Map.PacMap.ENTITIES;
 import GamePlay.Map.Position;
+import Motors.PhysicalCalculsMoteur;
 import view.Interface.Map;
 import view.Interface.Sprites;
 import javafx.animation.TranslateTransition;
@@ -33,65 +34,11 @@ public class MapController {
 		initializeMap(pacmap);
 	}
 
-	public boolean moveEntity(Entity e, Position end, int x, int y, int speed)
+	public boolean moveEntity(Entity e, Position end, TranslateTransition translateTransition, PhysicalCalculsMoteur.Pair currentPixelPositions)
 	{
-		ImageView imageToMove = null;
-		if (e.getType() == ENTITIES.PACMAN)
-		{
-			imageToMove = m_pacman;
-			TranslateTransition translateTransition =
-					new TranslateTransition(Duration.millis(speed), imageToMove);
-			if (y == 1)
-			{
-				translateTransition.setByX(MapController.CONFIG_X);
-		        imageToMove.setImage(Sprites.orientatePacman(imageToMove.getImage(), "RIGHT"));
-			}
-			else if (y == -1)
-			{
-				translateTransition.setByX(- MapController.CONFIG_X);
-		        imageToMove.setImage(Sprites.orientatePacman(imageToMove.getImage(), "LEFT"));
-			}
-			else if (x == 1)
-			{
-				translateTransition.setByY(MapController.CONFIG_Y);
-		        imageToMove.setImage(Sprites.orientatePacman(imageToMove.getImage(), "DOWN"));
-			}
-			else if (x == -1)
-			{
-				translateTransition.setByY(- MapController.CONFIG_Y);
-		        imageToMove.setImage(Sprites.orientatePacman(imageToMove.getImage(), "UP"));
-			}
-	        translateTransition.setAutoReverse(false);
-	        translateTransition.play();
-		}
-		else if (e.getType() == ENTITIES.GHOST)
-		{
-			Ghost g = (Ghost) e;
-			imageToMove = m_ghosts.get(g.getNumGhost());
-			TranslateTransition translateTransition =
-					new TranslateTransition(Duration.millis(speed), imageToMove);
-			if (y == 1)
-			{
-				translateTransition.setByX(MapController.CONFIG_X);
-			}
-			else if (y == -1)
-			{
-				translateTransition.setByX(- MapController.CONFIG_X);
-			}
-			else if (x == 1)
-			{
-				translateTransition.setByY(MapController.CONFIG_X);
-			}
-			else if (x == -1)
-			{
-				translateTransition.setByY(- MapController.CONFIG_X);
-			}
-	        translateTransition.setAutoReverse(false);
-	        translateTransition.play();
-		}
-		else
-			System.err.println("Error in MapController.movePacman()");
 
+		translateTransition.setAutoReverse(false);
+		translateTransition.play();
 		// on enleve l'entité de sa position de départ
 		m_pacmap.removeEntity(e);
 		// on move à sa nouvelle position
@@ -102,15 +49,14 @@ public class MapController {
 		e.setPosition(end);
 		// remplace l'image de départ par son nouvel MainElem
 		// (car l'entité présente qui vient de partir pouvait l'etre)
-		replaceImage(copy, m_pacmap.getMainElem(copy.getPosition().getX(), copy.getPosition().getY()));
+		replaceImage(currentPixelPositions, m_pacmap.getMainElem(copy.getPosition().getX(), copy.getPosition().getY()));
 		return true;
 	}
 	
-	private void replaceImage(Entity e, ENTITIES replaceByThisEntity)
+	private void replaceImage(PhysicalCalculsMoteur.Pair currentPixelPositions, ENTITIES replaceByThisEntity)
 	{
-		int x = e.getPosition().getX();
-		int y = e.getPosition().getY();
-		m_map.replaceImage(x, y, replaceByThisEntity);
+
+		m_map.replaceImage(currentPixelPositions.getX(), currentPixelPositions.getY(), replaceByThisEntity);
 		m_map.preserveFrontground(m_ghosts, m_pacman);
 	}
 
@@ -175,7 +121,7 @@ public class MapController {
 		return true;
 	}
 
-	public void deleteEntity(Entity toDelete) {
+	public void deleteEntity(Entity toDelete, PhysicalCalculsMoteur.Pair currentPixelPosition) {
 		// le supprimer definitivement de l'image LOL avant de la remplacer
 		m_pacmap.removeEntity(toDelete);
 		System.out.println("------------------- ghost-------------------------");
@@ -183,13 +129,17 @@ public class MapController {
 		ENTITIES toReplace = m_pacmap.find(ENTITIES.FRUTE, toDelete.getPosition()) ? ENTITIES.FRUTE: ENTITIES.EMPTY;
 		System.out.println("TOREPLACE: " + toReplace);
 		System.out.println("a la position " + toDelete.getPosition().toString());
-		this.replaceImage(toDelete, toReplace);
+		this.replaceImage(currentPixelPosition, toReplace);
 	}
 
 	public void removeGhost(Entity e) {
 		Ghost g = (Ghost)e;
 		m_map.getChildren().remove(m_ghosts.get(g.getNumGhost()));
 		m_pacmap.removeEntity(e);
+	}
+
+	public ArrayList<ImageView> getM_ghosts() {
+		return m_ghosts;
 	}
 
 	public ArrayList <Entity> getEntities()

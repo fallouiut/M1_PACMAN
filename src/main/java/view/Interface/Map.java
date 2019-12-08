@@ -45,8 +45,8 @@ public class Map extends Pane {
                 imageView.setImage(Sprites.empty);
                 break;
         }
-        imageView.setX(y * MapController.CONFIG_Y);
-        imageView.setY(x * MapController.CONFIG_X);
+        imageView.setX(y);
+        imageView.setY(x);
         imageView.setFitHeight(MapController.CONFIG_X);
         imageView.setFitWidth(MapController.CONFIG_Y);
         imageView.setPreserveRatio(true);
