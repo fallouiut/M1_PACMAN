@@ -63,12 +63,10 @@ public class GamePlay {
 
     public synchronized void stopMoves() {
         canMove = false;
-        System.out.println("stop moves");
     }
 
     public synchronized void allowMoves() {
         canMove = true;
-        System.out.println("c'est bon ça bouge");
     }
 
     public void alterMoves() {
@@ -86,14 +84,6 @@ public class GamePlay {
         canMove = false;
         totalScore = 0;
         lifeLeft = 0;
-
-        if (main != null) {
-            stopPower(PacMap.ENTITIES.KILLING_POWER);
-            stopPower(PacMap.ENTITIES.SPEED_POWER);
-        }
-        if (ghosts.size() > 0) {
-            stopPower(PacMap.ENTITIES.SLOW_GHOST_POWER);
-        }
     }
 
     public void startEntities() {
@@ -158,10 +148,8 @@ public class GamePlay {
                     if (this.canMove) {
                         PacMap.ENTITIES mainAtNewPos = map.getLabyrinth()[end.getX()][end.getY()].getMainElem();
                         gameMotor.makeMove(entity, end);
-
                         // donne à l'entité sa nouvelle position
                         entity.setPosition(end);
-
                         // on récupere l'entité principale à la position end
                         // verifie s'il y a collision entre les deux
                         Entity entityAtEndPos = this.getEntityByPos(end, mainAtNewPos);
@@ -231,12 +219,11 @@ public class GamePlay {
     }
 
     public void ghostCollision(Ghost ghost) {
-        System.out.println("Gameplay.ghostCollision()");
         Entity killed = main.chooseWhoToKill(ghost);
+        System.out.println(killed.getType());
         if (killed.getType() == PacMap.ENTITIES.GHOST) {
             killGhost(ghost);
         } else if (killed.getType() == PacMap.ENTITIES.PACMAN) {
-            System.out.println("KILL PACMAN");
             hurtPacman();
         }
     }
@@ -263,20 +250,20 @@ public class GamePlay {
     }
 
     public void stopPower(PacMap.ENTITIES power) {
-        System.out.println("\u001B[33m" + "Power: " + power + " \u001B[35m DISABLED \u001B[0m");
-        switch (power) {
-            case KILLING_POWER:
+        if(power == PacMap.ENTITIES.KILLING_POWER || power == PacMap.ENTITIES.SPEED_POWER) {
+            if(main.getPacman() != null) {
                 main = main.getPacman();
-                break;
-            case SPEED_POWER:
-                main = main.getPacman();
-                break;
-            case SLOW_GHOST_POWER:
+                gameMotor.powerEnd();
+            }
+            System.out.println("\u001B[33m" + "Power: " + power + " \u001B[35m DISABLED \u001B[0m");
+        } else if(power == PacMap.ENTITIES.SLOW_GHOST_POWER) {
+            if(ghosts.size() > 0) {
                 freezeBackGhosts();
-                break;
+                gameMotor.powerEnd();
+            }
+            System.out.println("\u001B[33m" + "Power: " + power + " \u001B[35m DISABLED \u001B[0m");
         }
-        gameMotor.powerEnd();
-        System.out.println("power stopped: " + main.toString());
+
     }
 
     public void freezeGhosts(int minus) {
@@ -301,6 +288,7 @@ public class GamePlay {
 
     public void hurtPacman() {
         lifeLeft--;
+        System.out.println("Nombre de vies: " + lifeLeft);
         if (lifeLeft > 0)
             gameMotor.loseLife();
         else
@@ -309,12 +297,15 @@ public class GamePlay {
     }
 
     public void killGhost(Ghost g) {
-        // TODO: ghosts.getByPosition(p).stop
-        // TODO: game.deleteGhost(p)
         g.dead();
         gameMotor.removeGhost(g);
         totalScore = totalScore + getPoints(g);
         gameMotor.setScore(totalScore);
+    }
+
+    public void killGhosts() {
+        for(Ghost g: ghosts)
+            g.dead();
     }
 
     public void go() {
@@ -349,10 +340,12 @@ public class GamePlay {
     }
 
     public void nextLevel() {
+        killGhosts();
         reinitData();
+        stopMoves();
+        stopPowers();
 
         currentLevelNumber += 1;
-        System.out.println("--------- PASSAGE AU NIVEAU " + currentLevelNumber + "---------------");
         currentLevel = new Level(currentLevelNumber);
         if (currentLevel.get()) {
             try {
@@ -362,7 +355,6 @@ public class GamePlay {
                 this.map.setPath(mapName);
                 this.map.load();
                 this.lifeLeft = currentLevel.getPacmanLives();
-                stopMoves();
                 this.go();
             } catch (Exception e) {
                 System.out.println("GamePlay.nextLvl()");
@@ -371,6 +363,16 @@ public class GamePlay {
             }
         } else {
             JOptionPane.showMessageDialog(null, "Le jeu est fini... Vous êtes si fort :-)");
+        }
+    }
+
+    private void stopPowers() {
+        if (main != null) {
+            stopPower(PacMap.ENTITIES.KILLING_POWER);
+            stopPower(PacMap.ENTITIES.SPEED_POWER);
+        }
+        if (ghosts.size() > 0) {
+            stopPower(PacMap.ENTITIES.SLOW_GHOST_POWER);
         }
     }
 

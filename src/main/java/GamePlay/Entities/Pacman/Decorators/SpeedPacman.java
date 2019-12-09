@@ -12,12 +12,11 @@ public class SpeedPacman extends AbstractPacman {
         super(pacman.getPosition());
         this.decorated = pacman;
         this.speedAdded = speedAdded;
-        // TODO Auto-generated constructor stub
     }
 
     @Override
     public Entity chooseWhoToKill(Entity e) {
-        return null;
+        return decorated;
     }
 
     @Override

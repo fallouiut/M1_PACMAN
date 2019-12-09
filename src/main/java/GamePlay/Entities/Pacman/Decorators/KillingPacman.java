@@ -12,7 +12,6 @@ public class KillingPacman extends AbstractPacman {
     public KillingPacman(AbstractPacman decoratedPacman) {
         super(decoratedPacman.getPosition());
         this.decoratedPacman = decoratedPacman;
-        // TODO Auto-generated constructor stub
     }
 
     @Override

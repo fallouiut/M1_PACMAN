@@ -1,4 +1,5 @@
 .idea/
 target/
+out/
 pom.xml
 projet_gl_pacman.iml

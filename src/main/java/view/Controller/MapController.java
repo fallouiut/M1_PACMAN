@@ -123,9 +123,8 @@ public class MapController {
 	public void removeGhost(Entity e, PhysicalCalculsMoteur.Pair currentPixelPos) {
 		Ghost g = (Ghost)e;
 
-		//m_map.getChildren().remove(m_ghosts.get(g.getNumGhost()));
-		//deleteEntity(g, currentPixelPos);
-		m_ghosts.remove(g.getNumGhost());
+		// attention a ne pas ramener des bugs si ca ne marche pas bien
+		//m_ghosts.remove(g.getNumGhost());
 		m_pacmap.removeEntity(e);
 	}
 

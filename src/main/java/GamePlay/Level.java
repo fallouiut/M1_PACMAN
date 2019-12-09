@@ -68,7 +68,6 @@ public class Level {
         return levelNumber;
     }
 
-    /* TODO a utiliser */
     public int getGhostSpeed() {
         return ghostSpeed;
     }

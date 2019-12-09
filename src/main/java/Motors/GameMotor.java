@@ -23,7 +23,6 @@ public class GameMotor {
     }
 
     public void victory() {
-        // TODO: mapController popup indiquant que le jeu est fini
         Sounds.victory();
     }
 
@@ -43,12 +42,10 @@ public class GameMotor {
         graphicalMotor.translation(entity, end, translateTransition, currentPixelPosition);
     }
 
-    // TODO : Il faut appeller cette fonction quand le score est modifié
     public void setScore(int score) {
         graphicalMotor.setScore(score);
     }
 
-    // TODO : Il faut appeller cette fonction quand le nombre de vie est modifié
     public void setLife(int life) {
         graphicalMotor.setLife(life);
     }

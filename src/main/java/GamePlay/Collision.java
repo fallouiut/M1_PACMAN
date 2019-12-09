@@ -22,7 +22,7 @@ class PacManFruteCollision implements Collision {
     @Override
     public void takeDecision(GamePlay gamePlay, Entity e1, Entity e2) {
         if (e2.getType() == PacMap.ENTITIES.FRUTE) {
-            gamePlay.deleteFrute(e2); // gamePlay.deleteFrute(e1); TODO: avant c'était comme ça et j'ai juste inversé
+            gamePlay.deleteFrute(e2); // gamePlay.deleteFrute(e1);
         } else {
             gamePlay.deleteFrute(e1); // gamePlay.deleteFrute(e2);*/
         }
@@ -66,7 +66,5 @@ class PacManPowerCollision implements Collision {
             gamePlay.powerCollision(e2);
         else
             gamePlay.powerCollision(e1);
-
-        // TODO: gamePlay.givePower()
     }
 }

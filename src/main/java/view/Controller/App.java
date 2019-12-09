@@ -42,7 +42,7 @@ public class App extends Application {
 
     	this.stage = stage;
         this.pane = initInterface();
-        graphicalMotor = new GraphicalMotor(map, m_stateBar, m_pacmanAnim, pane);
+        graphicalMotor = new GraphicalMotor(map, m_stateBar, m_pacmanAnim, pane, stage);
         sounds = new Sounds();
         gameMotor = new GameMotor(graphicalMotor, sounds);
         gameMotor = new GameMotor(graphicalMotor, sounds);

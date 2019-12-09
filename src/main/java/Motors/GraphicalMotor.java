@@ -5,12 +5,14 @@ import GamePlay.Map.PacMap;
 import GamePlay.Map.Position;
 import javafx.animation.TranslateTransition;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import view.Controller.MapController;
 import view.Interface.PacmanAnimation;
 import view.Interface.StateBar;
 
 public class GraphicalMotor {
 
+    private final Stage stage;
     private MapController window;
     private StateBar stateBar;
     private PacmanAnimation pacmanAnimation;
@@ -19,11 +21,12 @@ public class GraphicalMotor {
     /*
         Moteur graphique qui gère la bonne liaison entre son/map/animation/score_life
      */
-    public GraphicalMotor(MapController mapController, StateBar stateBar, PacmanAnimation pacmanAnimation, BorderPane borderPane) throws Exception {
+    public GraphicalMotor(MapController mapController, StateBar stateBar, PacmanAnimation pacmanAnimation, BorderPane borderPane, Stage stage) throws Exception {
         this.window = mapController;
         this.stateBar = stateBar;
         this.pacmanAnimation = pacmanAnimation;
         this.pane = borderPane;
+        this.stage = stage;
     }
 
     public void translation(Entity entity, Position end, TranslateTransition translateTransition, PhysicalCalculsMoteur.Pair currentPixelPosition) {
@@ -39,6 +42,8 @@ public class GraphicalMotor {
 
         pacmanAnimation = new PacmanAnimation(window);
         pacmanAnimation.start();
+
+        stage.sizeToScene();
 
         return isDone;
     }

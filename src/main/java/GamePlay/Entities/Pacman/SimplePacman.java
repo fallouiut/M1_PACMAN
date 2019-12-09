@@ -20,6 +20,6 @@ public class SimplePacman extends AbstractPacman
 
     @Override
     public AbstractPacman getPacman() {
-        return this;
+        return null;
     }
 }
